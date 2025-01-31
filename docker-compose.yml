@@ -1,0 +1,61 @@
+volumes:
+  sqlserver_data:
+  node_modules:
+
+services:
+    sqlserver:
+        container_name: invoice-manager-db
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+            MSSQL_SA_PASSWORD: secret*12345
+            ACCEPT_EULA: Y
+        ports:
+            - "1433:1433"
+        volumes:
+            - sqlserver_data:/var/opt/mssql
+        restart: always
+    api:
+        container_name: invoice-manager-api
+        build:
+            context: ./api/
+            dockerfile: nginx.docker
+        ports:
+            - "8000:80"
+        env_file:
+            - ./api/.env
+        depends_on:
+            - sqlserver
+    fpm:
+        container_name: invoice-manager-fpm
+        build:
+            context: ./api/
+        links:
+            - sqlserver
+        volumes:
+            - ./php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./api:/var/www
+            - ~/.ssh:/home/ubuntu/.ssh
+        environment:
+            - "DB_PORT=3306"
+            - "DB_HOST=sqlserver"
+        user: ubuntu
+    frontend:
+        container_name: invoice-manager-frontend
+        build:
+            context: ./frontend
+        ports:
+            - 8080:8080
+        env_file:
+            - ./frontend/.env.development
+        volumes:
+            - ./frontend/:/opt/app
+            - node_modules:/opt/node_modules
+        user: node
+        tty: true
+    mail:
+        container_name: invoice-manager-mail
+        image: maildev/maildev
+        ports:
+            - "8025:80"
+        command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+
