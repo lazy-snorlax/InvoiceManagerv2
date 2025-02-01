@@ -6,6 +6,9 @@ import RegisterPage from '../views/Register'
 import MenuPage from '../views/Invoices/Invoice'
 import InvoicePage from '../views/Invoices/Invoice'
 import InvoiceList from '../views/Invoices/InvoiceList'
+import CustomerList from '../views/Customers/CustomerList'
+import CustomerPage from '../views/Customers/Customer'
+import SettingsPage from '../views/Settings'
 
 
 export const router = createBrowserRouter([
@@ -30,6 +33,20 @@ export const router = createBrowserRouter([
                     }
                 ]
             },
+            { 
+                path: "customers/",
+                children: [
+                    {
+                        path: "",
+                        element: <CustomerList />
+                    },
+                    {
+                        path: ":id",
+                        element: <CustomerPage />
+                    }
+                ]
+            },
+            { path: "settings", element: <SettingsPage /> },
         ]
     }
 ])

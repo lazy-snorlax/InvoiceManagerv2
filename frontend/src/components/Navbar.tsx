@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 interface Props {}
 
@@ -26,13 +26,13 @@ const Navbar = (props: Props) => {
             </div>
             <div className="hidden flex-none lg:block">
                 <ul className="menu menu-horizontal">
-                    <li><Link to="/invoices" className="">Invoices</Link></li>
+                    <li><NavLink to="/invoices" className="">Invoices</NavLink></li>
                     <li><a className="">Quotes</a></li>
-                    <li><a className="">Customers</a></li>
+                    <li><NavLink to="/customers" className="">Customers</NavLink></li>
                     <li><a className="">Suppliers</a></li>
-                    <li><a className="">Business</a></li>
-                    <li><a className="">Settings</a></li>
+                    {/* <li><a className="">Business</a></li> */}
                     <li><a className="">Reports</a></li>
+                    <li><NavLink to="/settings">Settings</NavLink></li>
                 </ul>
             </div>
             <div className="hidden flex-none lg:block">
