@@ -5,7 +5,7 @@ import axios from "axios";
 const SettingsForm = () => {
 
   return (
-    <div>
+    <div className="w-full">
       <form data-name="Tablebusinessdetail">
         <div className="flex space-x-4">
           <div className="mb-4 w-1/4" hidden>
