@@ -1,15 +1,30 @@
-import { Link } from "react-router"
+import InvoicePage from "./Invoice"
 
 type Props = {}
 
 const InvoiceList = (props: Props) => {
+    const invoice = {
+        "company": null,
+        "type": null,
+        "date": null,
+        "credittype": null,
+        "paid": null,
+        "businessNo": null,
+        "paymentDetail": null,
+        "note": null,
+        "transactions": []
+    }
+
     return (
-        <>
-            <h2>This is a list of invoices</h2>
-            <div className="">
-                <Link className="btn btn-neutral w-50" to="/invoices/01">Open an Invoice</Link>
+        <div className="max-h-screen flex flex-col">
+            <div className="flex-grow">
+                <InvoicePage invoice={invoice} />
             </div>
-        </>
+            
+            <div className="bg-gray-800 text-white p-4">
+                I'm at the bottom of the page
+            </div>
+        </div>
     )
 }
 

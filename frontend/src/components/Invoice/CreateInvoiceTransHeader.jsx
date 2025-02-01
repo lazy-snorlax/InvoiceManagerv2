@@ -7,31 +7,16 @@ const CreateInvoiceTransHeader = () => {
     <div className="w-full">
       <div className="overflow-x-auto">
         <div className="grid grid-cols-5 grid-rows-1 gap-4 mb-1">
-          <label className="form-control w-full">
-            <div className="label">
-              <span className="label-text">Title</span>
-            </div>
-            <input type="text" placeholder="Type here" className="input input-bordered w-full" />
-          </label>
-
-          <label className="form-control w-full col-span-3">
+          <label className="form-control w-full col-span-4">
             <div className="label">
               <span className="label-text">Description</span>
             </div>
             <input type="text" placeholder="Type here" className="input input-bordered w-full" />
           </label>
-
-          <button className="mt-auto btn btn-success">Add New Transaction Header</button>
+          <button className="mt-auto btn btn-success">New Address</button>
         </div>
       </div>
       <br />
-
-      {/* <InvoiceTransLines
-        lineId={id != undefined ? id : 0}
-        route={route}
-        lines={tranlines}
-        routeExpcodes={route.expensecodes}
-      /> */}
     </div>
   );
 }
