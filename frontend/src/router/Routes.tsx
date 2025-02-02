@@ -3,9 +3,9 @@ import App from '../App'
 import LoginPage from '../views/Login'
 import HomePage from '../views/Home'
 import RegisterPage from '../views/Register'
-import MenuPage from '../views/Invoices/Invoice'
-import InvoicePage from '../views/Invoices/Invoice'
-import InvoiceList from '../views/Invoices/InvoiceList'
+import MenuPage from '../views/Invoices/InvoicePage'
+import InvoicePage from '../views/Invoices/InvoicePage'
+import Invoices from '../views/Invoices/Invoices'
 import CustomerList from '../views/Customers/CustomerList'
 import CustomerPage from '../views/Customers/Customer'
 import SettingsPage from '../views/Settings'
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "",
-                        element: <InvoiceList />
+                        element: <Invoices />
                     },
                     {
                         path: ":id",
