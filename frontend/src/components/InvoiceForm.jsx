@@ -44,7 +44,7 @@ const InvoiceForm = (props) => {
         </label>
       </div>
 
-      <div className="grid grid-cols-2 grid-rows-1 gap-4">
+      <div className="grid grid-cols-3 grid-rows-1 gap-4">
         {/* <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Type</span>
@@ -70,6 +70,13 @@ const InvoiceForm = (props) => {
             <option>Paid #2</option>
           </select>
         </label> */}
+        <label className="form-control w-full">
+          <div className="label">
+            <span className="label-text">Order No</span>
+          </div>
+          <input type="text" defaultValue={props.invoice.orderNo} className="input input-bordered w-full" />
+        </label>
+
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Business No</span>
