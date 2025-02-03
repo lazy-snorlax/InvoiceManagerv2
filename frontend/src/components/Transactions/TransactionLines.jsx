@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import InvoiceTransLine from "./InvoiceTransLine";
+import InvoiceTransLine from "./TransactionLine";
 
 const InvoiceTransLines = (props) => {
   return (

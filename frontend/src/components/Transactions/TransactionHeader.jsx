@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import InvoiceTransLines from "./InvoiceTransLines";
+import TransactionLines from "./TransactionLines";
 
-const InvoiceTransHeader = (props) => {
+const TransactionHeader = (props) => {
   const [isOpen, setIsOpen] = useState(true)
   const toggleCollapse = () => setIsOpen(!isOpen)
 
@@ -23,7 +23,7 @@ const InvoiceTransHeader = (props) => {
 
         <div className={`transition-all duration-300 mt-2 ${isOpen ? 'max-h-screen' : 'max-h-0'} overflow-hidden`}>
           <div className="bg-gray-100 p-4 rounded shadow-md">
-            <InvoiceTransLines lines={props.transaction.lines} />
+            <TransactionLines lines={props.transaction.lines} />
           </div>
         </div>
       </div>
@@ -31,4 +31,4 @@ const InvoiceTransHeader = (props) => {
   );
 }
 
-export default InvoiceTransHeader;
+export default TransactionHeader;

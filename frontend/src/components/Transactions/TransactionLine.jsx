@@ -1,7 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
-import InvoiceTransLines from "./InvoiceTransLines";
 
 function InvoiceTransLine(props) {
   return (

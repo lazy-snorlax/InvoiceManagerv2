@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import InvoiceTransLines from "./InvoiceTransLines";
+import InvoiceTransLines from "./TransactionLines";
 
-const CreateInvoiceTransHeader = () => {
+const CreateTransactionHeader = () => {
   return (
     <div className="w-full">
       <div className="overflow-x-auto">
@@ -21,4 +21,4 @@ const CreateInvoiceTransHeader = () => {
   );
 }
 
-export default CreateInvoiceTransHeader;
+export default CreateTransactionHeader;
