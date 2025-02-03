@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const RecordNavigator = ({data, RenderComponent}) => {
     const [record, setRecord] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(data.length > 0 ? data.length-2 : 0);
+    const [currentIndex, setCurrentIndex] = useState(data.length-1);
     const [loading, setLoading] = useState(false);
 
     const fetchRecord = async (index) => {
@@ -44,12 +44,11 @@ const RecordNavigator = ({data, RenderComponent}) => {
                 <div className="min-h-full flex flex-col">
                     <div className="flex-grow">
                         <h1>No records found</h1>
-                        {/* <RenderComponent record={null} /> */}
                     </div>
                 </div>
                 <div className="sticky bottom-0 bg-gray-800 text-white p-2">
-                    <button className='btn btn-ghost' onClick={handlePrevious} disabled={currentIndex === 0}>Previous</button>
-                    <button className='btn btn-ghost' onClick={handleNext}>Next</button>
+                    <button className='btn btn-ghost' onClick={handlePrevious} disabled={currentIndex === 0}>&#11164;</button>
+                    <button className='btn btn-ghost' onClick={handleNext}>&#10148;</button>
                 </div>
             </>
         );
@@ -63,8 +62,9 @@ const RecordNavigator = ({data, RenderComponent}) => {
                 </div>
             </div>
             <div className="sticky bottom-0 bg-gray-800 text-white p-2">
-                <button className='btn btn-ghost' onClick={handlePrevious} disabled={currentIndex === 0}>Previous</button>
-                <button className='btn btn-ghost' onClick={handleNext} disabled={currentIndex === data.length-1}>Next</button>
+                <button className='btn btn-ghost' onClick={handlePrevious} disabled={currentIndex === 0}>&#11164;</button>
+                <span>{`${currentIndex + 1} of ${data.length-1}`}</span>
+                <button className='btn btn-ghost' onClick={handleNext} disabled={currentIndex === data.length-1}>&#10148;</button>
             </div>
         </>
     );
