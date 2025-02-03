@@ -8,6 +8,7 @@ const CustomerPage = ({ record }) => {
             <div className="card bg-base-300 w-full">
                 <div className="card-body items-center text-center">
                     <CustomerForm customer={record} key={record.id} />
+                    <button className="btn btn-success">Save Customer</button>
                 </div>
             </div>
         </div>
