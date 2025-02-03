@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const RecordNavigator = ({data, RenderComponent}) => {
     const [record, setRecord] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(data.length-1);
+    const [currentIndex, setCurrentIndex] = useState(data.length > 1 ? data.length-1 : 0);
     const [loading, setLoading] = useState(false);
 
     const fetchRecord = async (index) => {
