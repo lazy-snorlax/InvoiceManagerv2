@@ -1,24 +1,24 @@
 
-import InvoiceForm from '../../components/Invoice/InvoiceForm'
-import InvoiceTransHeader from '../../components/Invoice/InvoiceTransHeader'
-import CreateInvoiceTransHeader from '../../components/Invoice/CreateInvoiceTransHeader'
+import InvoiceForm from '../../components/InvoiceForm'
+import TransactionHeader from '../../components/Transactions/TransactionHeader'
+import CreateTransactionHeader from '../../components/Transactions/CreateTransactionHeader'
 
 const InvoicePage = ({record}) => {
     console.log(">>> record: ", record)
     return (
         <div className="container mx-auto mt-4">
-            <div className="card bg-base-300 w-full">
+            <div className="card bg-teal-500 w-full">
                 <div className="card-body items-center text-center">
                     <InvoiceForm invoice={record} key={record.id} />
                 </div>
             </div>
             <div className="mt-3 mx-2 px-1">
-                <CreateInvoiceTransHeader />
+                <CreateTransactionHeader />
             </div>
             {record.transactions.map((transaction, index) => (
                 <div className="card bg-base-300 w-100 mt-3" key={`trans-header=${transaction.titleNo}-${index}`} >
                     <div className="card-body items-center text-center py-1">
-                        <InvoiceTransHeader transaction={transaction} />
+                        <TransactionHeader transaction={transaction} />
                     </div>
                 </div>
             ))}

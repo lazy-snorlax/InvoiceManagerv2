@@ -2,7 +2,6 @@ import RecordNavigator from '../../components/RecordNavigator'
 import invoices from '../../data/invoices.json'
 import InvoicePage from './InvoicePage'
 
-const api = "http://localhost:8080"
 const Invoices = () => {
     return (
         <div>
