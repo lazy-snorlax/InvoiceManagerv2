@@ -6,8 +6,9 @@ import RegisterPage from '../views/Register'
 import MenuPage from '../views/Invoices/InvoicePage'
 import Invoices from '../views/Invoices/Invoices'
 import Customers from '../views/Customers/Customers'
-import Quotes from '../views/Quotes'
+import Quotes from '../views/Quotes/Quotes'
 import SettingsPage from '../views/Settings'
+import Reports from '../views/Reports'
 
 
 export const router = createBrowserRouter([
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
                 ]
             },
             { path: "settings", element: <SettingsPage /> },
+            { path: "reports", element: <Reports /> },
         ]
     }
 ])
