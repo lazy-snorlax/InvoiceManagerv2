@@ -27,7 +27,7 @@ const Navbar = (props: Props) => {
             <div className="hidden flex-none lg:block">
                 <ul className="menu menu-horizontal">
                     <li><NavLink to="/invoices" className="">Invoices</NavLink></li>
-                    <li><a className="">Quotes</a></li>
+                    <li><NavLink to="/quotes" className="">Quotes</NavLink></li>
                     <li><NavLink to="/customers" className="">Customers</NavLink></li>
                     <li><a className="">Suppliers</a></li>
                     {/* <li><a className="">Business</a></li> */}
