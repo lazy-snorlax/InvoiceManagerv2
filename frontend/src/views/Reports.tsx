@@ -8,6 +8,13 @@ const Reports = (props: Props) => {
                     Select the start and end dates for the reports.
 
                     <div className="grid grid-cols-2 grid-rows-1 gap-4">
+                        <button className="btn btn-secondary">Sales by Last Month</button>
+                        <button className="btn btn-secondary">Sales by Last Year</button>
+                        <button className="btn btn-secondary">Export Last Month to Excel</button>
+                        <button className="btn btn-secondary">Export Last Year to Excel</button>
+                    </div>
+
+                    <div className="grid grid-cols-2 grid-rows-1 gap-4 mt-10">
                         <label className="form-control w-full">
                             <div className="label">
                                 <span className="label-text">Start Date</span>
@@ -24,8 +31,8 @@ const Reports = (props: Props) => {
                     </div>
                     
                     <div className="grid grid-cols-2 grid-rows-1 gap-4">
-                        <button className="btn btn-secondary">Sales Report</button>
-                        <button className="btn btn-secondary">Export to Excel</button>
+                        <button className="btn btn-secondary">Custom Sales Report</button>
+                        <button className="btn btn-secondary">Custom Export to Excel</button>
                     </div>
                 </div>
             </div>
