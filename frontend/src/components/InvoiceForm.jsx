@@ -12,23 +12,7 @@ const InvoiceForm = (props) => {
           </div>
           <input type="text" defaultValue={props.invoice.company} className="input input-bordered w-full" />
         </label>
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Company</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Company #1</option>
-          </select>
-        </label> */}
-
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Credit Type</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Credit Type #1</option>
-          </select>
-        </label> */}
+        
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Credit Type</span>
@@ -45,15 +29,6 @@ const InvoiceForm = (props) => {
       </div>
 
       <div className="grid grid-cols-3 grid-rows-1 gap-4">
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Type</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Type #1</option>
-          </select>
-        </label> */}
-
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Type</span>
@@ -61,15 +36,6 @@ const InvoiceForm = (props) => {
           <input type="text" defaultValue={props.invoice.type} className="input input-bordered w-full" />
         </label>
 
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Paid</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Paid #1</option>
-            <option>Paid #2</option>
-          </select>
-        </label> */}
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Order No</span>
@@ -83,25 +49,6 @@ const InvoiceForm = (props) => {
           </div>
           <input type="text" defaultValue={props.invoice.businessNo} className="input input-bordered w-full" />
         </label>
-      </div>
-
-      <div className="grid grid-cols-2 grid-rows-1 gap-4">
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Business</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Business #1</option>
-          </select>
-        </label> */}
-
-
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Payment Details</span>
-          </div>
-          <input type="text" placeholder="Type here" className="input input-bordered w-full" />
-        </label> */}
       </div>
 
       <div className="grid grid-cols-1 grid-rows-1 gap-4">
