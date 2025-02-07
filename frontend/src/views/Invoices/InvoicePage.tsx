@@ -4,7 +4,7 @@ import TransactionHeader from '../../components/Transactions/TransactionHeader'
 import CreateTransactionHeader from '../../components/Transactions/CreateTransactionHeader'
 
 const InvoicePage = ({record}) => {
-    console.log(">>> record: ", record)
+    // console.log(">>> record: ", record)
     return (
         <div className="container mx-auto mt-4">
             <div className="card bg-teal-500 w-full">
