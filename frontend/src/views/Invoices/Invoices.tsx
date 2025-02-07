@@ -4,24 +4,26 @@ import { useInvoiceStore } from '../../stores/invoice'
 import { useEffect } from 'react'
 
 const Invoices = () => {
-    const { invoices, currentInvoice, loading, error, fetchInvoices, nextInvoice, previousInvoice } = useInvoiceStore()
+    const { records, currentRecord, loading, error, fetchRecords, next, previous } = useInvoiceStore()
 
     useEffect(() => {
-        fetchInvoices()
-    }, [fetchInvoices])
+        fetchRecords()
+    }, [fetchRecords])
 
     return (
         <div>
             <RecordNavigator state={{
-                invoices,
-                currentInvoice,
+                records,
+                currentRecord,
                 loading,
                 error
             }}
             actions={{
-                nextInvoice, 
-                previousInvoice
-            }} key={currentInvoice ? currentInvoice.id : 0} />
+                next, 
+                previous
+            }} 
+            RenderComponent={InvoicePage}
+            />
         </div>
     )
 }

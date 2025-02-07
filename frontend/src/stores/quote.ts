@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import invoices from '../data/invoices.json'
+import quotes from '../data/quotes.json'
 
-type Invoice = {
+type Quote = {
     id: number| null
     company: string | null
     credittype: string | null
@@ -13,34 +13,34 @@ type Invoice = {
     transactions: []
 }
 
-interface InvoiceState {
-    records: Invoice[],
-    currentRecord: Invoice | null,
+interface QuoteState {
+    records: Quote[],
+    currentRecord: Quote | null,
     loading: boolean,
     error: string | null,
     
     // Actions
     fetchRecords: () => void
-    setCurrentRecord: (invoice: Invoice) => void
+    setCurrentRecord: (quote: Quote) => void
     next: () => void
     previous: () => void
 }
 
-export const useInvoiceStore = create<InvoiceState>()((set) => ({
+export const useQuoteStore = create<QuoteState>()((set) => ({
     records: [],
     currentRecord: null,
     loading: false,
     error: null,
 
     fetchRecords: () => {
-        const data: Invoice[] = invoices
-        set({ records: data, currentRecord: invoices[0] || null})
+        const data: Quote[] = quotes
+        set({ records: data, currentRecord: quotes[0] || null})
     },
 
     // fetchRecords: async () => {
     //     set({ loading: true, error: null })
     //     try {
-    //         const response = await fetch(`/api/invoices`);
+    //         const response = await fetch(`/api/quotes`);
     //         const data: Invoice[] = await response.json();
     //         set({ records: data, loading: false, currentRecord: data[0] || null });
     //     } catch (error) {
@@ -48,7 +48,7 @@ export const useInvoiceStore = create<InvoiceState>()((set) => ({
     //     }
     // },
 
-    setCurrentRecord: (invoice) => set({ currentRecord: invoice }),
+    setCurrentRecord: (quote) => set({ currentRecord: quote }),
 
     next: () => set((state) => {
         const currentIndex = state.records.indexOf(state.currentRecord!);

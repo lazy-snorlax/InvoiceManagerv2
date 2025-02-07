@@ -1,29 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
-type RecordNavigatorProps<TState, TActions> = {
+type RecordNavigatorProps<TState, TActions, ReactElement> = {
     state: TState; // The state from the store
     actions: TActions; // The actions from the store
+    RenderComponent: ReactElement
 };
 
-const RecordNavigator = <TState, TActions>({
+const RecordNavigator = <TState, TActions, ReactElement>({
     state,
     actions,
-  }: RecordNavigatorProps<TState, TActions>) => {
+    RenderComponent
+  }: RecordNavigatorProps<TState, TActions, ReactElement>) => {
 
-    const { invoices, currentInvoice, loading, error } = state;
+    const { records, currentRecord, loading, error } = state;
     const { next, previous } = actions;
 
-    console.log(">>>> current: ", currentInvoice)
+    if (loading) { return <div>Loading...</div> }
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    if (error) { return <div>Error: {error}</div> }
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (currentInvoice == null) {
+    if (currentRecord == null) {
         return (
             <>
                 <div className="min-h-full flex flex-col">
@@ -43,8 +39,8 @@ const RecordNavigator = <TState, TActions>({
         <>
             <div className="min-h-full flex flex-col">
                 <div className="flex-grow">
-                    {/* <RenderComponent record={currentRecord} key={currentRecord.id} /> */}
-                    <pre key={currentInvoice.id}>{currentInvoice.company}</pre>
+                    <RenderComponent record={currentRecord} key={currentRecord.id} />
+                    <pre>{currentRecord.company}</pre>
                 </div>
             </div>
             <div className="sticky bottom-0 bg-gray-800 text-white p-2">

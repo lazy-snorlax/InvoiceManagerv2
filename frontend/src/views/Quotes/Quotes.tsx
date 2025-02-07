@@ -1,13 +1,29 @@
-import quotes from '../../data/quotes.json'
-// import RecordNavigator from '../../components/RecordNavigator'
+import { useEffect } from 'react'
+import RecordNavigator from '../../components/RecordNavigator'
 import Quote from "./Quote"
+import { useQuoteStore } from '../../stores/quote'
 
-type Props = {}
+const Quotes = () => {
+    const { records, currentRecord, loading, error, fetchRecords, next, previous } = useQuoteStore()
 
-const Quotes = (props: Props) => {
+    useEffect(() => {
+        fetchRecords()
+    }, [fetchRecords])
+
     return (
         <div>
-            {/* <RecordNavigator data={quotes} RenderComponent={Quote} /> */}
+            <RecordNavigator state={{
+                records,
+                currentRecord,
+                loading,
+                error
+            }}
+            actions={{
+                next, 
+                previous
+            }} 
+            RenderComponent={Quote}
+            />
         </div>
     )
 }

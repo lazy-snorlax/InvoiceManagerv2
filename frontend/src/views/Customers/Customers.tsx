@@ -1,13 +1,29 @@
-import customers from '../../data/customers.json'
-// import RecordNavigator from '../../components/RecordNavigator'
+import RecordNavigator from '../../components/RecordNavigator'
+import { useCustomerStore } from '../../stores/customer'
 import CustomerPage from "./Customer"
+import { useEffect } from 'react'
 
-type Props = {}
+const Customers = () => {
+    const { records, currentRecord, loading, error, fetchRecords, next, previous } = useCustomerStore()
 
-const Customers = (props: Props) => {
+    useEffect(() => {
+        fetchRecords()
+    }, [fetchRecords])
+
     return (
         <div>
-            {/* <RecordNavigator data={customers} RenderComponent={CustomerPage} /> */}
+            <RecordNavigator state={{
+                records,
+                currentRecord,
+                loading,
+                error
+            }}
+            actions={{
+                next, 
+                previous
+            }} 
+            RenderComponent={CustomerPage} 
+            />
         </div>
     )
 }
