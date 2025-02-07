@@ -24,6 +24,7 @@ interface InvoiceState {
     setCurrentRecord: (invoice: Invoice) => void
     next: () => void
     previous: () => void
+    save: (invoice: Invoice) => void
 }
 
 export const useInvoiceStore = create<InvoiceState>()((set) => ({
@@ -55,9 +56,13 @@ export const useInvoiceStore = create<InvoiceState>()((set) => ({
         const nextIndex = (currentIndex + 1) % state.records.length;
         return { currentRecord: state.records[nextIndex] };
     }),
-    previous: ()=> set((state) => {
+    previous: () => set((state) => {
         const currentIndex = state.records.indexOf(state.currentRecord!);
         const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
         return { currentRecord: state.records[prevIndex] };
+    }),
+    save: (invoice) => set((state) => {
+        console.log(">>> currentState: ", state.currentRecord, invoice)
+        return { currentRecord: invoice }
     })
 }))
