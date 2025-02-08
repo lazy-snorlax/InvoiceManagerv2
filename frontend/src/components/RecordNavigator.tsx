@@ -40,7 +40,6 @@ const RecordNavigator = <TState, TActions, ReactElement>({
             <div className="min-h-full flex flex-col">
                 <div className="flex-grow">
                     <RenderComponent record={currentRecord} key={currentRecord.id} />
-                    <pre>{currentRecord.company}</pre>
                 </div>
             </div>
             <div className="sticky bottom-0 bg-gray-800 text-white p-2">
