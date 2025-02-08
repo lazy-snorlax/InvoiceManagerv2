@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import invoices from '../data/invoices.json'
 
 type Invoice = {
@@ -25,9 +26,12 @@ interface InvoiceState {
     next: () => void
     previous: () => void
     save: (invoice: Invoice) => void
+
+    addNewTransactionHead: (trans: {}) => void
+    updateTransaction: (trans: {}) => void
 }
 
-export const useInvoiceStore = create<InvoiceState>()((set) => ({
+export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     records: [],
     currentRecord: null,
     loading: false,
@@ -50,7 +54,6 @@ export const useInvoiceStore = create<InvoiceState>()((set) => ({
     // },
 
     setCurrentRecord: (invoice) => set({ currentRecord: invoice }),
-
     next: () => set((state) => {
         const currentIndex = state.records.indexOf(state.currentRecord!);
         const nextIndex = (currentIndex + 1) % state.records.length;
@@ -64,5 +67,14 @@ export const useInvoiceStore = create<InvoiceState>()((set) => ({
     save: (invoice) => set((state) => {
         console.log(">>> currentState: ", state.currentRecord, invoice)
         return { currentRecord: invoice }
+    }),
+
+    // TODO: api call to enter new TransHeader into db
+    addNewTransactionHead: (trans) => set((state) => {
+        return { currentRecord: { ...state.currentRecord, transactions: trans, } }
+    }),
+    
+    updateTransaction: (trans) => set((state) => {
+        console.log(">>> updateTrans: ", trans)
     })
-}))
+})))

@@ -1,8 +1,33 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import InvoiceTransLines from "./TransactionLines";
 
-const CreateTransactionHeader = () => {
+const CreateTransactionHeader = ({ transactions, add }) => {
+  const [list, setList] = useState(transactions)
+  const [description, setDescription] = useState()
+
+  const newHeaderOnChange = (event) => {
+    const { value } = event.target
+    setDescription(value)
+  }
+
+  const addNewTransactionHeader = () => {
+      // TODO: refactor for post request
+      const newLine = {
+          "titleNo": "new-" + (list.length),
+          "description": description,
+          "lines": [{
+              "titleNo": null,
+              "item": null,
+              "description": null,
+              "tax": null,
+              "cost": null,
+              "expense": null,
+          }]
+      }
+      add([...list, newLine])
+      setDescription('')
+      console.log(">>> New TR Header: ", list, newLine)
+  }
+
   return (
     <div className="w-full">
       <div className="overflow-x-auto">
@@ -11,9 +36,9 @@ const CreateTransactionHeader = () => {
             <div className="label">
               <span className="label-text">Description</span>
             </div>
-            <input type="text" placeholder="Type here" className="input input-bordered w-full" />
+            <input type="text" placeholder="Type here" className="input input-bordered w-full" name="description" onChange={newHeaderOnChange} />
           </label>
-          <button className="mt-auto btn btn-success">New Address</button>
+          <button className="mt-auto btn btn-success" onClick={addNewTransactionHeader}>New Address</button>
         </div>
       </div>
       <br />

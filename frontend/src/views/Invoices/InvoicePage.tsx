@@ -3,17 +3,21 @@ import InvoiceForm from '../../components/InvoiceForm'
 import TransactionHeader from '../../components/Transactions/TransactionHeader'
 import CreateTransactionHeader from '../../components/Transactions/CreateTransactionHeader'
 import { useInvoiceStore } from '../../stores/invoice'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const InvoicePage = ({ record }) => {
-    const { save } = useInvoiceStore()
+    const { save, addNewTransactionHead } = useInvoiceStore()
     const [invoice, setInvoice] = useState(record)
+    const [transactions, setTransactions] = useState(invoice.transactions)
 
     const handleOnChange = (event) => {
         const { name, value } = event.target
         setInvoice({...invoice, [name]: value})
-        console.log(">>> handleOnChange", invoice)
     }
+
+    useEffect(() => {
+        setTransactions(useInvoiceStore.getState().currentRecord?.transactions)
+    })
 
     const updateState = () => {
         save(invoice)
@@ -27,9 +31,9 @@ const InvoicePage = ({ record }) => {
                 </div>
             </div>
             <div className="mt-3 mx-2 px-1">
-                <CreateTransactionHeader />
+                <CreateTransactionHeader transactions={transactions} add={addNewTransactionHead} />
             </div>
-            {invoice.transactions.map((transaction, index) => (
+            {transactions.map((transaction, index) => (
                 <div className="card bg-base-300 w-100 mt-3" key={`trans-header=${transaction.titleNo}-${index}`} >
                     <div className="card-body items-center text-center py-1">
                         <TransactionHeader transaction={transaction} />
