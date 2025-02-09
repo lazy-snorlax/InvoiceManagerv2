@@ -6,22 +6,21 @@ import { useInvoiceStore } from '../../stores/invoice'
 import { useEffect, useState } from 'react'
 
 const InvoicePage = ({ record }) => {
-    const { save, addNewTransactionHead } = useInvoiceStore()
+    const { save, addNewTransactionHead, setCurrentRecord } = useInvoiceStore()
     const [invoice, setInvoice] = useState(record)
     const [transactions, setTransactions] = useState(invoice.transactions)
 
     const handleOnChange = (event) => {
         const { name, value } = event.target
         setInvoice({...invoice, [name]: value})
+        setCurrentRecord(invoice)
     }
 
     useEffect(() => {
         setTransactions(useInvoiceStore.getState().currentRecord?.transactions)
     })
 
-    const updateState = () => {
-        save(invoice)
-    }
+    const handleSave = () => { save() }
 
     return (
         <div className="container mx-auto mt-4">
@@ -45,7 +44,7 @@ const InvoicePage = ({ record }) => {
                     <div className="grid grid-cols-10 grid-rows-1 gap-4">
                         <button className="btn btn-primary">Preview Invoice</button>
                         <button className="btn btn-primary">Print Invoice</button>
-                        <button className="btn btn-success" onClick={updateState}>Save Invoice</button>
+                        <button className="btn btn-success" onClick={handleSave}>Save Invoice</button>
                         <span className="col-span-4"></span>
                         <span className="my-auto col-span-1">Item Excl Total: $0.00</span>
                         <span className="my-auto col-span-1">GST Total: $0.00</span>

@@ -25,7 +25,7 @@ interface InvoiceState {
     setCurrentRecord: (invoice: Invoice) => void
     next: () => void
     previous: () => void
-    save: (invoice: Invoice) => void
+    save: () => void
 
     addNewTransactionHead: (trans: {}) => void
     updateTransaction: (trans: {}) => void
@@ -64,9 +64,10 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
         return { currentRecord: state.records[prevIndex] };
     }),
-    save: (invoice) => set((state) => {
-        console.log(">>> currentState: ", state.currentRecord, invoice)
-        return { currentRecord: invoice }
+    save: () => set((state) => {
+        // set({ currentRecord: invoice })
+        console.log(">>> save: currentRecord", state.currentRecord)
+        return { currentRecord: state.currentRecord }
     }),
 
     // TODO: api call to enter new TransHeader into db
