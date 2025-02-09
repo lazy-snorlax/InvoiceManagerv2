@@ -9,7 +9,7 @@ const CreateTransactionHeader = ({ transactions, add }) => {
     setDescription(value)
   }
 
-  const addNewTransactionHeader = () => {
+  const addNewHeader = () => {
       // TODO: refactor for post request
       const newLine = {
           "titleNo": "new-" + (list.length),
@@ -38,7 +38,7 @@ const CreateTransactionHeader = ({ transactions, add }) => {
             </div>
             <input type="text" placeholder="Type here" className="input input-bordered w-full" name="description" onChange={newHeaderOnChange} />
           </label>
-          <button className="mt-auto btn btn-success" onClick={addNewTransactionHeader}>New Address</button>
+          <button className="mt-auto btn btn-success" onClick={addNewHeader}>New Address</button>
         </div>
       </div>
       <br />
