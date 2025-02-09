@@ -27,8 +27,12 @@ interface InvoiceState {
     previous: () => void
     save: () => void
 
+    // Actions for TransHead
     addNewTransactionHead: (trans: {}) => void
-    updateTransaction: (trans: {}) => void
+    updateTransactionHead: (trans: {}) => void
+    removeTransactionHead: (trans: {}) => void
+
+    // TODO: Actions for TransLines
 }
 
 export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
@@ -42,6 +46,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         set({ records: data, currentRecord: invoices[0] || null})
     },
 
+    // TODO: api call
     // fetchRecords: async () => {
     //     set({ loading: true, error: null })
     //     try {
@@ -75,7 +80,22 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         return { currentRecord: { ...state.currentRecord, transactions: trans, } }
     }),
     
-    updateTransaction: (trans) => set((state) => {
-        console.log(">>> updateTrans: ", trans)
-    })
+    // TODO: api call to update TransHead directly and return result?
+    updateTransactionHead: (trans) => set((state) => ({
+         currentRecord: {
+            ...state.currentRecord,
+            transactions: state.currentRecord?.transactions.map((item) => 
+                item.titleNo === trans.titleNo ? { ...item, ...trans } : item
+            ),
+        },
+    })),
+
+    // TODO: api call to remove TransHead and return new currentRecord?
+    removeTransactionHead: (trans) => set((state) => ({
+        currentRecord: {
+            ...state.currentRecord,
+            transactions: state.currentRecord?.transactions.filter((item) => 
+                item.titleNo !== trans.titleNo)
+        }
+    }))
 })))

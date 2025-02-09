@@ -6,7 +6,13 @@ import { useInvoiceStore } from '../../stores/invoice'
 import { useEffect, useState } from 'react'
 
 const InvoicePage = ({ record }) => {
-    const { save, addNewTransactionHead, setCurrentRecord } = useInvoiceStore()
+    const { 
+        save, 
+        addNewTransactionHead, 
+        updateTransactionHead,
+        removeTransactionHead,
+        setCurrentRecord,
+     } = useInvoiceStore()
     const [invoice, setInvoice] = useState(record)
     const [transactions, setTransactions] = useState(invoice.transactions)
 
@@ -35,7 +41,7 @@ const InvoicePage = ({ record }) => {
             {transactions.map((transaction, index) => (
                 <div className="card bg-base-300 w-100 mt-3" key={`trans-header=${transaction.titleNo}-${index}`} >
                     <div className="card-body items-center text-center py-1">
-                        <TransactionHeader transaction={transaction} />
+                        <TransactionHeader transaction={transaction} updateHead={updateTransactionHead} deleteHead={removeTransactionHead} />
                     </div>
                 </div>
             ))}
