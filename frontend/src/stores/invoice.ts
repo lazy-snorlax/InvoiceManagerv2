@@ -33,6 +33,10 @@ interface InvoiceState {
     removeTransactionHead: (trans: {}) => void
 
     // TODO: Actions for TransLines
+    addNewTransactionLine: (trans: {}) => void
+    updateTransactionLine: (trans: {}) => void
+    removeTransactionLine: (trans: {}) => void
+
 }
 
 export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
@@ -75,6 +79,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         return { currentRecord: state.currentRecord }
     }),
 
+    /** -- Transaction Head ----------------------- */
     // TODO: api call to enter new TransHeader into db
     addNewTransactionHead: (trans) => set((state) => {
         return { currentRecord: { ...state.currentRecord, transactions: trans, } }
@@ -97,5 +102,43 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             transactions: state.currentRecord?.transactions.filter((item) => 
                 item.titleNo !== trans.titleNo)
         }
-    }))
+    })),
+
+    /** -- Transaction Lines ----------------------- */
+    addNewTransactionLine: (line) => set((state) => {
+        const trans = state.currentRecord?.transactions.map((item) => {
+            if (item.titleNo === line.titleNo) {
+                return { ...item, lines: [ ...item.lines, line] }
+            }
+            return item
+        });
+        return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    }),
+
+    updateTransactionLine: (updatedLine) => set((state) => {
+        const trans = state.currentRecord?.transactions.map((item) => {
+            if (item.titleNo === updatedLine.titleNo) {
+                const lines = item.lines.map((line) => {
+                    if (line.item === updatedLine.item) {
+                        return updatedLine
+                    }
+                    return line
+                })
+                return { ...item, lines}
+            }
+            return item
+        })
+        return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    }),
+
+    removeTransactionLine: (removedLine) => set((state) => {
+        const trans = state.currentRecord?.transactions.map((item) => {
+            if (item.titleNo === removedLine.titleNo){
+                const lines = item.lines.filter((line) => line.item !== removedLine.item)
+                return { ...item, lines}
+            }
+            return item
+        })
+        return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    })
 })))
