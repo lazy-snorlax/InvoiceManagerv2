@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TransactionLines from "./TransactionLines";
 
-const TransactionHeader = ({ transaction, updateHead, deleteHead }) => {
-  const [trans, setTrans] = useState(transaction)
-
+const TransactionHeader = ({ transaction, updateHead, deleteHead, lineFuncs }) => {
   const [isOpen, setIsOpen] = useState(true)
   const toggleCollapse = () => setIsOpen(!isOpen)
-
+  
+  const [trans, setTrans] = useState(transaction)
   const [disabledHeader, setDisabledHeader] = useState(true)
 
   const handleOnChange = (event) => {
@@ -15,12 +14,13 @@ const TransactionHeader = ({ transaction, updateHead, deleteHead }) => {
   }
 
   const editHeader = () => { setDisabledHeader(!disabledHeader) }
-  const updateHeader = () => { 
-    // TODO: Update transheader
+  const updateHeader = () => {
     updateHead(trans)
     editHeader()
   }
   const removeHeader = () => { deleteHead(trans) }
+
+  useEffect(() => { setTrans(transaction) })
 
   return (
     <div className="w-full">
@@ -43,7 +43,7 @@ const TransactionHeader = ({ transaction, updateHead, deleteHead }) => {
 
         <div className={`transition-all duration-300 mt-2 ${isOpen ? 'max-h-screen' : 'max-h-0'} overflow-hidden`}>
           <div className="bg-gray-100 p-4 rounded shadow-md">
-            <TransactionLines lines={trans.lines} />
+            <TransactionLines lines={trans.lines} lineFuncs={lineFuncs} />
           </div>
         </div>
       </div>

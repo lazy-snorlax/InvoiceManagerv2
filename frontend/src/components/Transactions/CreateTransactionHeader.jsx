@@ -9,23 +9,25 @@ const CreateTransactionHeader = ({ transactions, add }) => {
     setDescription(value)
   }
 
+  useEffect(() => { setList(transactions) })
+
   const addNewHeader = () => {
-      // TODO: refactor for post request
-      const newLine = {
-          "titleNo": "new-" + (list.length),
-          "description": description,
-          "lines": [{
-              "titleNo": null,
-              "item": null,
-              "description": null,
-              "tax": null,
-              "cost": null,
-              "expense": null,
-          }]
-      }
-      add([...list, newLine])
-      setDescription('')
-      console.log(">>> New TR Header: ", list, newLine)
+    if (description == '') { return }
+    // TODO: refactor for post request
+    const newLine = {
+        "titleNo": "new-" + (list.length),
+        "description": description,
+        "lines": [{
+            "titleNo": "new-" + (list.length),
+            "item": 1,
+            "description": null,
+            "tax": 10.0,
+            "cost": 0.0,
+            "expense": null,
+        }]
+    }
+    add([...list, newLine])
+    console.log(">>> New TR Header: ", list, newLine)
   }
 
   return (
