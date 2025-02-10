@@ -68,9 +68,9 @@ const InvoicePage = ({ record }) => {
                         <button className="btn btn-primary">Print Invoice</button>
                         <button className="btn btn-success" onClick={handleSave}>Save Invoice</button>
                         <span className="col-span-4"></span>
-                        <span className="my-auto col-span-1">Item Excl Total: ${(calculateCost() -(calculateCost() * 0.1)).toFixed(2)}</span>
+                        <span className="my-auto col-span-1">Item Excl Total: ${(calculateCost())}</span>
                         <span className="my-auto col-span-1">GST Total: ${(calculateCost() * 0.1).toFixed(2)}</span>
-                        <span className="my-auto col-span-1">Item Inc Total: ${calculateCost() }</span>
+                        <span className="my-auto col-span-1">Item Inc Total: ${(parseFloat(calculateCost()) + parseFloat(calculateCost() * 0.1)).toFixed(2)}</span>
                     </div>
                 </div>
             </div>
