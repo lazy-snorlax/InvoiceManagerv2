@@ -36,7 +36,6 @@ services:
             - ./api:/var/www
             - ~/.ssh:/home/ubuntu/.ssh
         environment:
-            - "DB_PORT=3306"
             - "DB_HOST=sqlserver"
         user: ubuntu
     frontend:
