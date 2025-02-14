@@ -31,6 +31,7 @@ interface CustomerState {
     setCurrentRecord: (customer: Customer) => void
     next: () => void
     previous: () => void
+    save: () => void
 }
 
 export const useCustomerStore = create<CustomerState>()((set) => ({
@@ -66,5 +67,14 @@ export const useCustomerStore = create<CustomerState>()((set) => ({
         const currentIndex = state.records.indexOf(state.currentRecord!);
         const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
         return { currentRecord: state.records[prevIndex] };
+    }),
+    // TODO: api post/update based on currentRecord id
+    save: () => set((state) => {
+        if (!state.currentRecord.id) {
+            console.log(">>> post: Customer currentRecord ", state.currentRecord)
+        } else {
+            console.log(">>> update: Customer currentRecord ", state.currentRecord)
+        }
+        return { currentRecord: state.currentRecord }
     })
 }))
