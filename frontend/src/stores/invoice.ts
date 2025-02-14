@@ -75,7 +75,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     }),
     save: () => set((state) => {
         // set({ currentRecord: invoice })
-        console.log(">>> save: currentRecord", state.currentRecord)
+        console.log(">>> save: Invoice currentRecord", state.currentRecord)
         return { currentRecord: state.currentRecord }
     }),
 
