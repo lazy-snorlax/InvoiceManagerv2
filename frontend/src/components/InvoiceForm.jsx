@@ -1,11 +1,29 @@
-import React from "react";
-// import { useInvoiceStore } from '../stores/invoice'
+import React, { act } from "react";
+import Select from "react-select"
+import { useCustomerStore } from "../stores/customer"
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 
 const InvoiceForm = (props) => {
-  // const { updateState } = useInvoiceStore()
   const { handle } = props
+  const { records, fetchRecords } = useCustomerStore()
+  
+  const reactCompanyOptions = records.map(option => ({
+    value: option.id,
+    label: option.company_name
+  }))
+  const defaultCompany = reactCompanyOptions.find(option => option.value == props.invoice.company)
+  
+  const handleSelectChange = (value, actionMeta) => {
+    // console.log(">>> handle", value, actionMeta)
+    handle({ value, actionMeta })
+  }
+
+  useEffect(() => {
+    fetchRecords()
+    // setCompanyOptions(options)
+    console.log(">>> defaultCompany: ", defaultCompany)
+  }, [fetchRecords])
 
   return (
     <div className="w-full">
@@ -14,7 +32,12 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Company</span>
           </div>
-          <input type="text" defaultValue={props.invoice.company} className="input input-bordered w-full" name="company" onChange={handle} />
+          {/* <input type="text" defaultValue={props.invoice.company} className="input input-bordered w-full" name="company" onChange={handle} /> */}
+          <Select options={reactCompanyOptions} value={defaultCompany} name="company" onChange={(value, actionMeta) => handleSelectChange(value, actionMeta)} 
+            classNames={{ 
+              control: () => 'h-12',
+              input: () => 'form-control w-full',
+            }} />
         </label>
         
         <label className="form-control w-full">
@@ -33,12 +56,12 @@ const InvoiceForm = (props) => {
       </div>
 
       <div className="grid grid-cols-3 grid-rows-1 gap-4">
-        <label className="form-control w-full">
+        {/* <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Type</span>
           </div>
           <input type="text" defaultValue={props.invoice.type} className="input input-bordered w-full" name="type" />
-        </label>
+        </label> */}
 
         <label className="form-control w-full">
           <div className="label">
@@ -51,7 +74,7 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Business No</span>
           </div>
-          <input type="text" defaultValue={props.invoice.businessNo} className="input input-bordered w-full" name="businessNo" />
+          <input type="text" defaultValue={props.invoice.business_no} className="input input-bordered w-full" name="businessNo" />
         </label>
       </div>
 

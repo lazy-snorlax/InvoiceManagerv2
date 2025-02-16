@@ -3,7 +3,7 @@ import InvoiceForm from '../../components/InvoiceForm'
 import TransactionHeader from '../../components/Transactions/TransactionHeader'
 import CreateTransactionHeader from '../../components/Transactions/CreateTransactionHeader'
 import { useInvoiceStore } from '../../stores/invoice'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const InvoicePage = ({ record }) => {
     const { 
@@ -20,11 +20,20 @@ const InvoicePage = ({ record }) => {
      } = useInvoiceStore()
     const [invoice, setInvoice] = useState(record)
     const [transactions, setTransactions] = useState(invoice.transactions)
+    const invoiceRef = useRef(invoice)
 
     const handleOnChange = (event) => {
-        const { name, value } = event.target
-        setInvoice({...invoice, [name]: value})
-        setCurrentRecord(invoice)
+        if (event.target == undefined) {
+            console.log(">>> handle notInput", event)
+            const { value, actionMeta } = event
+            invoiceRef.current = ({...invoice, [actionMeta.name]: value.value})
+            setCurrentRecord(invoiceRef.current)
+        } else {
+            console.log(">>> handle input", event)
+            const { name, value } = event.target
+            invoiceRef.current = ({...invoice, [name]: value})
+            setCurrentRecord(invoiceRef.current)
+        }
     }
 
     // Totals
@@ -38,6 +47,7 @@ const InvoicePage = ({ record }) => {
     }
 
     useEffect(() => {
+        setInvoice(invoiceRef.current)
         setTransactions(useInvoiceStore.getState().currentRecord?.transactions)
         calculateCost()
     })
