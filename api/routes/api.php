@@ -19,7 +19,9 @@ Route::post('/password/reset', Controllers\Password\ResetPasswordController::cla
 
 
 // TODO: Global Lookups =====================================================
-
+Route::get('/invoices', [Controllers\InvoiceController::class, 'index']);
+Route::get('/invoices/{id}', [Controllers\InvoiceController::class, 'show']);
+Route::get('/invoice-list', Controllers\InvoiceListController::class);
 
 // Authenticated ============================================================
 Route::middleware(['auth:sanctum'])->group(function () {
