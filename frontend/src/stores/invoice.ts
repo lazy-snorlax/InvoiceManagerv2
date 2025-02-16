@@ -6,7 +6,7 @@ type Invoice = {
     id: number| null
     company: string | null
     credittype: string | null
-    date: string | null
+    created_at: string | null
     note: string | null
     paid: string | null
     paymentdetail: string | null
@@ -15,13 +15,14 @@ type Invoice = {
 }
 
 interface InvoiceState {
-    records: Invoice[],
+    records: [],
     currentRecord: Invoice | null,
     loading: boolean,
     error: string | null,
     
     // Actions
     fetchRecords: () => void
+    fetchLatestRecord: () => void
     setCurrentRecord: (invoice: Invoice) => void
     next: () => void
     previous: () => void
@@ -45,33 +46,57 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     loading: false,
     error: null,
 
-    fetchRecords: () => {
-        const data: Invoice[] = invoices
-        set({ records: data, currentRecord: invoices[0] || null})
+    // fetch array of invoice ids, use them to navigate records
+    fetchRecords: async () => {
+        set({ loading: true, error: null })
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}invoice-list`)
+            const data = await response.json()
+            set({ loading: false, records: data })
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+        }
     },
 
     // TODO: api call
-    // fetchRecords: async () => {
-    //     set({ loading: true, error: null })
-    //     try {
-    //         const response = await fetch(`/api/invoices`);
-    //         const data: Invoice[] = await response.json();
-    //         set({ records: data, loading: false, currentRecord: data[0] || null });
-    //     } catch (error) {
-    //         set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
-    //     }
-    // },
+    fetchLatestRecord: async () => {
+        set({ loading: true, error: null })
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
+    },
 
     setCurrentRecord: (invoice) => set({ currentRecord: invoice }),
-    next: () => set((state) => {
-        const currentIndex = state.records.indexOf(state.currentRecord!);
-        const nextIndex = (currentIndex + 1) % state.records.length;
-        return { currentRecord: state.records[nextIndex] };
+    next: () => set( async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
+            const nextIndex = (currentIndex + 1) % state.records.length;
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices/${state.records[nextIndex].id}`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
     }),
-    previous: () => set((state) => {
-        const currentIndex = state.records.indexOf(state.currentRecord!);
-        const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
-        return { currentRecord: state.records[prevIndex] };
+    previous:  () => set(async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
+            const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices/${state.records[prevIndex].id}`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
+
     }),
     save: () => set((state) => {
         // set({ currentRecord: invoice })

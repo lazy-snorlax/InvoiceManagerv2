@@ -4,10 +4,11 @@ import { useInvoiceStore } from '../../stores/invoice'
 import { useEffect } from 'react'
 
 const Invoices = () => {
-    const { records, currentRecord, loading, error, fetchRecords, next, previous } = useInvoiceStore()
+    const { records, currentRecord, loading, error, fetchRecords, fetchLatestRecord, next, previous } = useInvoiceStore()
 
     useEffect(() => {
-        fetchRecords()
+        fetchRecords(),
+        fetchLatestRecord()
     }, [fetchRecords])
 
     return (
