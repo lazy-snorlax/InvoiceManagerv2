@@ -14,13 +14,14 @@ type Quote = {
 }
 
 interface QuoteState {
-    records: Quote[],
+    records: [],
     currentRecord: Quote | null,
     loading: boolean,
     error: string | null,
     
     // Actions
     fetchRecords: () => void
+    fetchLatestRecord: () => void
     setCurrentRecord: (quote: Quote) => void
     next: () => void
     previous: () => void
@@ -43,34 +44,55 @@ export const useQuoteStore = create<QuoteState>()((set) => ({
     loading: false,
     error: null,
 
-    fetchRecords: () => {
-        const data: Quote[] = quotes
-        set({ records: data, currentRecord: quotes[0] || null})
+    fetchRecords: async () => {
+        set({ loading: true, error: null })
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}quote-list`)
+            const data = await response.json()
+            console.log(">>> records Quote", data)
+            set({ loading: false, records: data })
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+        }
     },
 
-    // TODO: api call
-    // fetchRecords: async () => {
-    //     set({ loading: true, error: null })
-    //     try {
-    //         const response = await fetch(`/api/quotes`);
-    //         const data: Invoice[] = await response.json();
-    //         set({ records: data, loading: false, currentRecord: data[0] || null });
-    //     } catch (error) {
-    //         set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
-    //     }
-    // },
+    fetchLatestRecord: async () => {
+        set({ loading: true, error: null })
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
+    },
 
     setCurrentRecord: (quote) => set({ currentRecord: quote }),
+    next: () => set(async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
+            const nextIndex = (currentIndex + 1) % state.records.length;
 
-    next: () => set((state) => {
-        const currentIndex = state.records.indexOf(state.currentRecord!);
-        const nextIndex = (currentIndex + 1) % state.records.length;
-        return { currentRecord: state.records[nextIndex] };
+            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[nextIndex].id}`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
     }),
-    previous: ()=> set((state) => {
-        const currentIndex = state.records.indexOf(state.currentRecord!);
-        const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
-        return { currentRecord: state.records[prevIndex] };
+    previous: ()=> set(async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
+            const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[prevIndex].id}`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
     }),
 
     save: () => set((state) => {
