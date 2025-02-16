@@ -27,6 +27,10 @@ Route::get('/quotes', [Controllers\QuoteController::class, 'index']);
 Route::get('/quotes/{id}', [Controllers\QuoteController::class, 'show']);
 Route::get('/quote-list', Controllers\QuoteListController::class);
 
+Route::get('/companies', [Controllers\CompanyController::class, 'index']);
+Route::get('/companies/{id}', [Controllers\CompanyController::class, 'show']);
+
+
 // Authenticated ============================================================
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', Controllers\LoggedInController::class);
