@@ -13,7 +13,9 @@ const RecordNavigator = <TState, TActions, ReactElement>({
   }: RecordNavigatorProps<TState, TActions, ReactElement>) => {
 
     const { records, currentRecord, loading, error } = state;
-    const { next, previous } = actions;
+    const { next, previous, first, last } = actions;
+
+    const currentIndex = records.findIndex((record) => record.id == state.currentRecord?.id);
 
     if (loading) { return <div>Loading...</div> }
 
@@ -43,9 +45,11 @@ const RecordNavigator = <TState, TActions, ReactElement>({
                 </div>
             </div>
             <div className="sticky bottom-0 bg-gray-800 text-white p-2">
+                <button className='btn btn-ghost' onClick={first} >|&#11164;</button>
                 <button className='btn btn-ghost' onClick={previous}>&#11164;</button>
-                {/* <span>{`${currentIndex + 1} of ${data.length-1}`}</span> */}
+                <span>{`${currentIndex+1} of ${records.length}`}</span>
                 <button className='btn btn-ghost' onClick={next}>&#10148;</button>
+                <button className='btn btn-ghost' onClick={last}>&#10148;|</button>
             </div>
         </>
     );
