@@ -19,7 +19,7 @@ const InvoiceForm = (props) => {
         
         <label className="form-control w-full">
           <div className="label">
-            <span className="label-text">Credit Type</span>
+            <span className="label-text">Account Type</span>
           </div>
           <input type="text" defaultValue={props.invoice.credittype} className="input input-bordered w-full" name="credittype" />
         </label>

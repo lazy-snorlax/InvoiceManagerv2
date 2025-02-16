@@ -24,14 +24,17 @@ const RecordNavigator = <TState, TActions, ReactElement>({
     if (currentRecord == null) {
         return (
             <>
-                <div className="min-h-full flex flex-col">
-                    <div className="flex-grow">
+                <div className="min-h-screen flex flex-col">
+                    <div className="grow">
                         <h1>No records found</h1>
                     </div>
                 </div>
                 <div className="sticky bottom-0 bg-gray-800 text-white p-2">
+                    <button className='btn btn-ghost' onClick={first} >|&#11164;</button>
                     <button className='btn btn-ghost' onClick={previous}>&#11164;</button>
+                    <span>{`${currentIndex+1} of ${records.length}`}</span>
                     <button className='btn btn-ghost' onClick={next}>&#10148;</button>
+                    <button className='btn btn-ghost' onClick={last}>&#10148;|</button>
                 </div>
             </>
         );
@@ -39,8 +42,8 @@ const RecordNavigator = <TState, TActions, ReactElement>({
 
     return (
         <>
-            <div className="min-h-full flex flex-col">
-                <div className="flex-grow">
+            <div className="min-h-screen flex flex-col">
+                <div className="grow">
                     <RenderComponent record={currentRecord} key={currentRecord.id} />
                 </div>
             </div>
