@@ -96,7 +96,6 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
-
     }),
     save: () => set((state) => {
         // set({ currentRecord: invoice })

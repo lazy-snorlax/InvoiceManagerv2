@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\InvoiceResource;
 use App\Models\TransactionMain;
 use Illuminate\Http\Request;
 
