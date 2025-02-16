@@ -51,7 +51,7 @@ const CustomerForm = (props) => {
                 </label>
             </div>
             
-            <div className="grid grid-cols-2 grid-rows-1 gap-4">
+            <div className="grid grid-cols-2 grid-rows-1 gap-10 mt-4">
                 <div className="grid grid-cols-1 grid-rows-4 gap-4">
                     <label className="form-control w-full">
                         <div className="label">
