@@ -25,6 +25,8 @@ interface QuoteState {
     setCurrentRecord: (quote: Quote) => void
     next: () => void
     previous: () => void
+    first: () => void
+    last: () => void
     save: () => void
 
     // Actions for TransHead
@@ -88,6 +90,26 @@ export const useQuoteStore = create<QuoteState>()((set) => ({
             const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[prevIndex].id}`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
+    }),
+    first: ()=> set(async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[0].id}`);
+            const data = await response.json();
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
+    }),
+    last: ()=> set(async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[state.records.length-1].id}`);
             const data = await response.json();
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
