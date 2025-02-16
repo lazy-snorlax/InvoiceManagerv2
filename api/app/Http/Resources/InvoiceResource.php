@@ -20,7 +20,7 @@ class InvoiceResource extends JsonResource
             'payment_detail' => $this->payment_detail,
             'paid' => $this->paid,
             'note' => $this->note,
-            'created_at' => $this->created_at->format('Y-m-d'),
+            'created_at' => $this->created_at?->format('Y-m-d'),
             'transactions' => InvoiceHeaderResource::collection($this->whenLoaded('headers'))
         ];
     }
