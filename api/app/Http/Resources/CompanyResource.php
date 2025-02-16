@@ -14,6 +14,7 @@ class CompanyResource extends JsonResource
             'id' => $this->id,
             'company_name' => $this->company_name,
             'contact_name' => $this->contact_name,
+            'account_type' => $this->whenLoaded('accountType')->id,
             'abn' => $this->abn,
             'email' => $this->email,
             'phone' => $this->phone,

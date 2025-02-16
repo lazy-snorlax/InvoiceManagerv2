@@ -29,6 +29,7 @@ Route::get('/quote-list', Controllers\QuoteListController::class);
 
 Route::get('/companies', [Controllers\CompanyController::class, 'index']);
 Route::get('/companies/{id}', [Controllers\CompanyController::class, 'show']);
+Route::get('/company-list', Controllers\CompanyListController::class);
 
 
 // Authenticated ============================================================
