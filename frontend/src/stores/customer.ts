@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import customers from '../data/customers.json'
+import { devtools } from "zustand/middleware";
 
 type Customer = {
     id: number | null
@@ -22,6 +22,7 @@ type Customer = {
 
 interface CustomerState {
     records: [],
+    options: [],
     currentRecord: Customer | null,
     loading: boolean,
     error: string | null,
@@ -34,9 +35,12 @@ interface CustomerState {
     previous: () => void
     first: () => void
     save: () => void
+
+    // Misc. Actions
+    // fetchOptions: (state: CustomerState) => void
 }
 
-export const useCustomerStore = create<CustomerState>()((set) => ({
+export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
     records: [],
     currentRecord: null,
     loading: false,
@@ -110,4 +114,4 @@ export const useCustomerStore = create<CustomerState>()((set) => ({
         }
         return { currentRecord: state.currentRecord }
     })
-}))
+})))

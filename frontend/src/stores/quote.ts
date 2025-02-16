@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import quotes from '../data/quotes.json'
+import { devtools } from "zustand/middleware";
 
 type Quote = {
     id: number| null
@@ -40,7 +40,7 @@ interface QuoteState {
     removeTransactionLine: (trans: {}) => void
 }
 
-export const useQuoteStore = create<QuoteState>()((set) => ({
+export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
     records: [],
     currentRecord: null,
     loading: false,
@@ -186,4 +186,4 @@ export const useQuoteStore = create<QuoteState>()((set) => ({
         })
         return { currentRecord: {...state.currentRecord, transactions: trans,} }
     })
-}))
+})))

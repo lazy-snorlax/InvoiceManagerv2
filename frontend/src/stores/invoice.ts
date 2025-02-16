@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import invoices from '../data/invoices.json'
 
 type Invoice = {
     id: number| null
