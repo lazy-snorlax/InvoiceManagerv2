@@ -3,7 +3,7 @@ import CreateTransactionHeader from '../../components/Transactions/CreateTransac
 import TransactionHeader from '../../components/Transactions/TransactionHeader'
 import QuoteForm from '../../components/QuoteForm'
 import { useQuoteStore } from '../../stores/quote'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const Quote = ({ record }) => {
     const { 
@@ -21,11 +21,20 @@ const Quote = ({ record }) => {
 
     const [quote, setQuote] = useState(record)
     const [transactions, setTransactions] = useState(quote.transactions)
+    const quoteRef = useRef(quote)
 
     const handleOnChange = (event) => {
-        const { name, value } = event?.target
-        setQuote({...quote, [name]: value})
-        setCurrentRecord(quote)
+        if (event.target == undefined) {
+            console.log(">>> handle notInput", event)
+            const { value, actionMeta } = event
+            quoteRef.current = ({...quote, [actionMeta.name]: value.value})
+            setCurrentRecord(quoteRef.current)
+        } else {
+            console.log(">>> handle input", event)
+            const { name, value } = event.target
+            quoteRef.current = ({...quote, [name]: value})
+            setCurrentRecord(quoteRef.current)
+        }
     }
 
     // Totals
@@ -39,6 +48,7 @@ const Quote = ({ record }) => {
     }
 
     useEffect(() => {
+        setQuote(quoteRef.current)
         setTransactions(useQuoteStore.getState().currentRecord?.transactions)
         calculateCost()
     })
