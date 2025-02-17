@@ -1,8 +1,28 @@
 import React from "react";
+import Select from "react-select"
+import { useCustomerStore } from "../stores/customer"
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 const QuoteForm = (props) => {
+  const { handle } = props
+  const { records, fetchRecords } = useCustomerStore()
+  
+  const reactCompanyOptions = records.map(option => ({
+    value: option.id,
+    label: option.company_name
+  }))
+  const defaultCompany = reactCompanyOptions.find(option => option.value == props.invoice.company)
+  
+  const handleSelectChange = (value, actionMeta) => {
+    // console.log(">>> handle", value, actionMeta)
+    handle({ value, actionMeta })
+  }
+
+  useEffect(() => {
+    fetchRecords()
+    // setCompanyOptions(options)
+    console.log(">>> defaultCompany: ", defaultCompany)
+  }, [fetchRecords])
   return (
     <div className="w-full">
       <div className="grid grid-cols-3 grid-rows-1 gap-4">
@@ -10,25 +30,13 @@ const QuoteForm = (props) => {
           <div className="label">
             <span className="label-text">Company</span>
           </div>
-          <input type="text" defaultValue={props.invoice.company} className="input input-bordered w-full" />
+          <Select options={reactCompanyOptions} value={defaultCompany} name="company" onChange={(value, actionMeta) => handleSelectChange(value, actionMeta)} 
+            classNames={{ 
+              control: () => 'h-12',
+              input: () => 'form-control w-full',
+            }} />
         </label>
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Company</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Company #1</option>
-          </select>
-        </label> */}
-
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Credit Type</span>
-          </div>
-          <select className="select select-bordered">
-            <option>Credit Type #1</option>
-          </select>
-        </label> */}
+        
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Credit Type</span>
