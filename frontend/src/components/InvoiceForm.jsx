@@ -32,7 +32,6 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Company</span>
           </div>
-          {/* <input type="text" defaultValue={props.invoice.company} className="input input-bordered w-full" name="company" onChange={handle} /> */}
           <Select options={reactCompanyOptions} value={defaultCompany} name="company" onChange={(value, actionMeta) => handleSelectChange(value, actionMeta)} 
             classNames={{ 
               control: () => 'h-12',
@@ -44,7 +43,7 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Account Type</span>
           </div>
-          <input type="text" defaultValue={props.invoice.credittype} className="input input-bordered w-full" name="credittype" />
+          <input type="text" defaultValue={"7 DAYS"} disabled className="input input-bordered w-full" name="credittype" />
         </label>
 
         <label className="form-control w-full">

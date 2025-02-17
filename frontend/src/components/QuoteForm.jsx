@@ -62,12 +62,12 @@ const QuoteForm = (props) => {
           </select>
         </label> */}
 
-        <label className="form-control w-full">
+        {/* <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Type</span>
           </div>
           <input type="text" defaultValue={props.invoice.type} className="input input-bordered w-full" />
-        </label>
+        </label> */}
 
         {/* <label className="form-control w-full">
           <div className="label">
