@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef, useState } from "react"
 import * as Yup from 'yup'
+import { useAuthStore } from "../stores/auth"
 
 type Props = {}
 
@@ -14,12 +15,32 @@ const validation = Yup.object().shape({
 })
 
 const LoginPage = (props: Props) => {
-    // const { loginUser } = null //useAuth
+    const { login } = useAuthStore()
+    const [username, setUsername] = useState()
+    const [password, setPassword] = useState()
+    const userRef = useRef(username)
+    const passRef = useRef(password)
     // const {
     //     register,
     //     handleSubmit,
     //     formState: { errors },
     // } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) })
+
+    const submit = () => {
+        console.log('>>> validate form here', userRef.current, passRef.current)
+        login({ username: userRef.current, password: passRef.current })
+    }
+
+    const handleOnChange = (event) => {
+        const { name, value } = event.target
+        if (name == "username") {
+            userRef.current = value
+        }
+        if (name == 'password') {
+            passRef.current = value
+        }
+        console.log(">>> handle input", userRef, passRef)
+    }
 
     return (
         <div className="hero bg-base-200 min-h-screen">
@@ -30,26 +51,26 @@ const LoginPage = (props: Props) => {
                     </h1>
                     <p className="py-6"></p>
                     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                        <form className="card-body">
+                        <div className="card-body">
                             <div className="form-control">
                                 <label className="label">
-                                    <span className="label-text">Email</span>
+                                    <span className="label-text">Username</span>
                                 </label>
-                                <input type="email" placeholder="email" className="input input-bordered" required />
+                                <input type="text" placeholder="Username" className="input input-bordered" name="username" defaultValue={username} required onChange={handleOnChange} />
                             </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="password" className="input input-bordered" required />
+                                <input type="password" placeholder="Password" className="input input-bordered" name="password" defaultValue={password} required onChange={handleOnChange} />
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
-                                <button className="btn btn-primary">Login</button>
+                                <button className="btn btn-primary" onClick={submit}>Login</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
