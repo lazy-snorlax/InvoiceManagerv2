@@ -1,55 +1,62 @@
-import { createStore } from "zustand/vanilla"
-import { create, StateCreator } from "zustand"
+import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import http from "../utilities/http"
-import { jwtDecode } from "jwt-decode"
-import { z } from "zod"
+import axios from "axios";
 
-const roles = z.enum(['admin', 'user']);
+// const roles = z.enum(['admin', 'user']);
+// type Role = z.infer<typeof roles>;
 
-type Role = z.infer<typeof roles>;
-
-const TokenDataSchema = z.object({
-    userId: z.string(),
-    roles,
-})
-
-type TokenData = z.infer<typeof TokenDataSchema>
-
-type AuthStore = {
-    // token: string
-    // tokenData: TokenData | undefined
-
-    // actions: {
-    //     setToken: (token: string | undefined) => void
-    //     init: () => void
-    //     clearTokens: () => void
-    // }
+type LoggedInUserResource = {
+    id : number
+    username: string
 }
 
-export const decodeAccessToken = (accessToken: string) => TokenDataSchema.parse(jwtDecode<TokenData>(accessToken));
+export type LoginForm = {
+    username: string
+    password: string
+}
+interface AuthState {
+    user: LoggedInUserResource | null
+    loading: boolean,
+    error: string | null,
 
-type JungleStore = {
-    bears: number
-    addBear: () => void
-    fishes: number
-    addFish: () => void
-  }
+    login: () => void
+    logout: () => void
+    get_user: () => LoggedInUserResource | null
+}
 
+export const useAuthStore = create<AuthState>()(
+    devtools((set) => ({
+        login: async (payload: LoginForm) => {
+            // set({ loading: true, error: null })
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}login`, payload)
+                console.log(">>> login attempt: ", response, response.data)
+                // set({ user: response.data })
+            } catch (error) {
+                // set({ error: error instanceof Error ? error.message : "Unknown error on login", loading: false })
+            }
+        },
 
-export const useAuthStore = create<JungleStore>()(
-    devtools((...args) => ({
-        
-        bears: 0,
-        addBear: () =>
-            set((state) => ({ bears: state.bears + 1 }), undefined, 'jungle/addBear'),
-        
-        fishes: 0,
-        addFish: () =>
-            set(
-                (state) => ({ fishes: state.fishes + 1 }),
-                undefined,
-                'jungle/addFish',
-            ),
+        logout: async () => {
+            set({ loading: true, error: null })
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}logout`)
+                console.log(">>> logout attempt: ", response, response.data)
+                set({ user: null })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+            }
+        },
+
+        get_user: async (state: AuthState) => {
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}user`)
+                console.log(">>> get user attempt: ", response, response.data)
+                set({ user: response.data })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+            }
+            return { user: state.user }
+        }
     })),
 )
