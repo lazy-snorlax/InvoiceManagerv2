@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react"
 import * as Yup from 'yup'
 import { useAuthStore } from "../stores/auth"
+import { redirect, useNavigate } from 'react-router'
 
 type Props = {}
 
@@ -15,20 +16,28 @@ const validation = Yup.object().shape({
 })
 
 const LoginPage = (props: Props) => {
-    const { login } = useAuthStore()
+    const { user, login } = useAuthStore()
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
     const userRef = useRef(username)
     const passRef = useRef(password)
+
+    let navigate = useNavigate()
     // const {
     //     register,
     //     handleSubmit,
     //     formState: { errors },
     // } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) })
 
-    const submit = () => {
-        console.log('>>> validate form here', userRef.current, passRef.current)
-        login({ username: userRef.current, password: passRef.current })
+    const submit = async () => {
+        try {
+            await login({ email: userRef.current, password: passRef.current })
+
+            // If login successful, reroute to dashboard
+            navigate("/")
+        } catch (error) {
+            console.error(">>> Login error: ", error)
+        }
     }
 
     const handleOnChange = (event) => {
@@ -39,7 +48,6 @@ const LoginPage = (props: Props) => {
         if (name == 'password') {
             passRef.current = value
         }
-        console.log(">>> handle input", userRef, passRef)
     }
 
     return (

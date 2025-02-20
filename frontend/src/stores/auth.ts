@@ -31,9 +31,9 @@ export const useAuthStore = create<AuthState>()(
             try {
                 const response = await axios.post(`${import.meta.env.VITE_API_URL}login`, payload)
                 console.log(">>> login attempt: ", response, response.data)
-                // set({ user: response.data })
+                set({ user: response.data.data })
             } catch (error) {
-                // set({ error: error instanceof Error ? error.message : "Unknown error on login", loading: false })
+                set({ error: error instanceof Error ? error.message : "Unknown error on login", loading: false })
             }
         },
 

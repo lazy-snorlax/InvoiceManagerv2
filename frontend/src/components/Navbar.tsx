@@ -1,9 +1,10 @@
-import React from "react";
+
 import { Link, NavLink } from "react-router-dom";
+import { useAuthStore } from "../stores/auth";
 
-interface Props {}
+const Navbar = (props) => {
+    const { user, logout } = useAuthStore()
 
-const Navbar = (props: Props) => {
     return (
         <div className="navbar bg-base-300 w-full">
             <div className="flex-none lg:hidden">
@@ -34,10 +35,16 @@ const Navbar = (props: Props) => {
                 </ul>
             </div>
             <div className="hidden flex-none lg:block">
-                <ul className="menu menu-horizontal">
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/register">Register</Link></li>
-                </ul>
+                { user != null ? (
+                        <ul className="menu menu-horizontal">
+                            <li><button onClick={logout}>Logout</button></li>
+                        </ul>
+                    ) : (
+                        <ul className="menu menu-horizontal">
+                            <li><Link to="/login">Login</Link></li>
+                            <li><Link to="/register">Register</Link></li>
+                        </ul>
+                    )}
             </div>
         </div>
     )
