@@ -9,7 +9,9 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "silber/bouncer": "^1.0",
+        "stevebauman/purify": "^6.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -17,7 +19,7 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^8.1",
+        "nunomaduro/collision": "^8.0",
         "phpunit/phpunit": "^11.5",
         "spatie/laravel-ignition": "^2.0"
     },

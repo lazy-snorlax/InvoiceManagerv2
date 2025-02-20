@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     ca-certificates \
     curl \
+    git \
+    zip \
     libxml2-dev \
     libltdl7 \
     libodbc1 \
