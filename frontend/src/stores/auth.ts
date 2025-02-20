@@ -7,7 +7,8 @@ import axios from "axios";
 
 type LoggedInUserResource = {
     id : number
-    username: string
+    name: string
+    email: string
 }
 
 export type LoginForm = {
@@ -16,6 +17,7 @@ export type LoginForm = {
 }
 interface AuthState {
     user: LoggedInUserResource | null
+    isAuthenticated: boolean,
     loading: boolean,
     error: string | null,
 
@@ -26,6 +28,9 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
     devtools((set) => ({
+        user: null,
+        isAuthenticated: false,
+
         login: async (payload: LoginForm) => {
             // set({ loading: true, error: null })
             try {
@@ -50,11 +55,12 @@ export const useAuthStore = create<AuthState>()(
 
         get_user: async (state: AuthState) => {
             try {
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}user`)
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}user`)
                 console.log(">>> get user attempt: ", response, response.data)
-                set({ user: response.data })
+                set({ user: response.data.data })
             } catch (error) {
                 set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                return error
             }
             return { user: state.user }
         }
