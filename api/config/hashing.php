@@ -16,6 +16,7 @@ return [
     */
 
     'driver' => 'bcrypt',
+    'rehash_on_login' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ return [
     */
 
     'bcrypt' => [
-        'rounds' => env('BCRYPT_ROUNDS', 10),
+        'rounds' => env('BCRYPT_ROUNDS', 14),
     ],
 
     /*

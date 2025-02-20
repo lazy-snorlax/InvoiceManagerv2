@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Lang;
 use App\Http\Resources\User as UserResource;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Validation\ValidationException;
 
