@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import axios from "axios";
+// import axios from "axios";
+import http from "../utilities/http"
 
 // const roles = z.enum(['admin', 'user']);
 // type Role = z.infer<typeof roles>;
@@ -18,25 +19,28 @@ export type LoginForm = {
 interface AuthState {
     user: LoggedInUserResource | null
     isAuthenticated: boolean,
+    csrf: boolean
     loading: boolean,
     error: string | null,
 
     login: () => void
     logout: () => void
     get_user: () => LoggedInUserResource | null
+    csrfPreflight: () => void
 }
 
 export const useAuthStore = create<AuthState>()(
     devtools((set) => ({
         user: null,
+        csrf: false,
         isAuthenticated: false,
 
         login: async (payload: LoginForm) => {
             // set({ loading: true, error: null })
             try {
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}login`, payload)
-                console.log(">>> login attempt: ", response, response.data)
-                set({ user: response.data.data })
+                const response = await http.post('login', payload)
+                console.log(">>> login attempt: ", response.data.data)
+                set({ user: response.data.data, error: null })
             } catch (error) {
                 set({ error: error instanceof Error ? error.message : "Unknown error on login", loading: false })
             }
@@ -45,7 +49,7 @@ export const useAuthStore = create<AuthState>()(
         logout: async () => {
             set({ loading: true, error: null })
             try {
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}logout`)
+                const response = await http.post(`logout`)
                 console.log(">>> logout attempt: ", response, response.data)
                 set({ user: null })
             } catch (error) {
@@ -55,14 +59,23 @@ export const useAuthStore = create<AuthState>()(
 
         get_user: async (state: AuthState) => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}user`)
+                const response = await http.get(`user`)
                 console.log(">>> get user attempt: ", response, response.data)
                 set({ user: response.data.data })
             } catch (error) {
                 set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
                 return error
             }
-            return { user: state.user }
+        },
+
+        csrfPreflight: async () => {
+            try {
+                console.log(">>> csrf preflight 3")
+                await http.get(`sanctum/csrf-cookie`, { csrfPreflight: true })
+                set({ csrf: true })
+            } catch {
+                console.log(">>> csrf preflight failed")
+            }
         }
     })),
 )
