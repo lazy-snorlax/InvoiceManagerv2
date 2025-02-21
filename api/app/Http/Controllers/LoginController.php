@@ -22,7 +22,7 @@ class LoginController extends Controller
             // fire lockout event & send response
 
         if ($auth->attempt($request->only('email', 'password'))) {
-            $request->session()->regenerate();
+            session()->regenerate();
 
             $user = $auth->user();
 
@@ -44,7 +44,7 @@ class LoginController extends Controller
     public function destroy(Request $request, Auth $auth): Response 
     {
         $auth->guard('web')->logout();
-        $request->session()->flush();
+        session()->flush();
         return response()->noContent();
     }
 }
