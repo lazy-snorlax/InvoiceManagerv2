@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import * as Yup from 'yup'
 import { useAuthStore } from "../stores/auth"
 import { redirect, useNavigate } from 'react-router'
@@ -16,11 +16,14 @@ const validation = Yup.object().shape({
 })
 
 const LoginPage = (props: Props) => {
-    const { user, login } = useAuthStore()
+    const { user, error, login } = useAuthStore()
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
     const userRef = useRef(username)
     const passRef = useRef(password)
+
+    const [loggedIn, setLoggedIn] = useState(user)
+    const [loginError, setLoginError] = useState(error)
 
     let navigate = useNavigate()
     // const {
@@ -30,14 +33,7 @@ const LoginPage = (props: Props) => {
     // } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) })
 
     const submit = async () => {
-        try {
-            await login({ email: userRef.current, password: passRef.current })
-
-            // If login successful, reroute to dashboard
-            navigate("/")
-        } catch (error) {
-            console.error(">>> Login error: ", error)
-        }
+        await login({ email: userRef.current, password: passRef.current })
     }
 
     const handleOnChange = (event) => {
@@ -49,6 +45,18 @@ const LoginPage = (props: Props) => {
             passRef.current = value
         }
     }
+
+    useEffect(() => {
+        setLoggedIn(useAuthStore.getState().user)
+        setLoginError(useAuthStore.getState().error)
+        if (loggedIn) {
+            navigate("/")
+        }
+
+        if (loginError) {
+            console.log(">>> login error: ", loginError)
+        }
+    })
 
     return (
         <div className="hero bg-base-200 min-h-screen">
