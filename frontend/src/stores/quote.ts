@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import http from "../utilities/http";
 
 type Quote = {
     id: number| null
@@ -49,9 +50,8 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
     fetchRecords: async () => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}quote-list`)
-            const data = await response.json()
-            console.log(">>> records Quote", data)
+            const response = await http.get(`quote-list`)
+            const data = await response.data
             set({ loading: false, records: data })
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
@@ -61,8 +61,8 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
     fetchLatestRecord: async () => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes`);
-            const data = await response.json();
+            const response = await http.get(`quotes`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -76,8 +76,8 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
             const nextIndex = (currentIndex + 1) % state.records.length;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[nextIndex].id}`);
-            const data = await response.json();
+            const response = await http.get(`quotes/${state.records[nextIndex].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -89,8 +89,8 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
             const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[prevIndex].id}`);
-            const data = await response.json();
+            const response = await http.get(`quotes/${state.records[prevIndex].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -99,8 +99,8 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
     first: ()=> set(async (state) => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[0].id}`);
-            const data = await response.json();
+            const response = await http.get(`quotes/${state.records[0].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -109,8 +109,8 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
     last: ()=> set(async (state) => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}quotes/${state.records[state.records.length-1].id}`);
-            const data = await response.json();
+            const response = await http.get(`quotes/${state.records[state.records.length-1].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})

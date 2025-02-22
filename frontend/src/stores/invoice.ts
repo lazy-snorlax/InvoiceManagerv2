@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import http from "../utilities/http";
 
 type Invoice = {
     id: number| null
@@ -51,8 +52,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     fetchRecords: async () => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}invoice-list`)
-            const data = await response.json()
+            const response = await http.get('invoice-list')
+            const data = await response.data
             set({ loading: false, records: data })
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
@@ -63,8 +64,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     fetchLatestRecord: async () => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices`);
-            const data = await response.json();
+            const response = await http.get(`invoices`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -78,8 +79,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
             const nextIndex = (currentIndex + 1) % state.records.length;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices/${state.records[nextIndex].id}`);
-            const data = await response.json();
+            const response = await http.get(`invoices/${state.records[nextIndex].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -91,8 +92,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
             const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices/${state.records[prevIndex].id}`);
-            const data = await response.json();
+            const response = await http.get(`invoices/${state.records[prevIndex].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -101,8 +102,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     first: ()=> set(async (state) => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices/${state.records[0].id}`);
-            const data = await response.json();
+            const response = await http.get(`invoices/${state.records[0].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -111,8 +112,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     last: ()=> set(async (state) => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}invoices/${state.records[state.records.length-1].id}`);
-            const data = await response.json();
+            const response = await http.get(`invoices/${state.records[state.records.length-1].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})

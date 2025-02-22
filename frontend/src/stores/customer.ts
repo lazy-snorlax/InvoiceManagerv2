@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import http from "../utilities/http";
 
 type Customer = {
     id: number | null
@@ -49,8 +50,8 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
     fetchRecords: async () => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}company-list`)
-            const data = await response.json()
+            const response = await http.get(`company-list`)
+            const data = await response.data
             set({ loading: false, records: data })
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
@@ -60,8 +61,8 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
     fetchFirstRecord: async () => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}companies`);
-            const data = await response.json();
+            const response = await http.get(`companies`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -75,8 +76,8 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
             const nextIndex = (currentIndex + 1) % state.records.length;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}companies/${state.records[nextIndex].id}`);
-            const data = await response.json();
+            const response = await http.get(`companies/${state.records[nextIndex].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -88,8 +89,8 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const currentIndex = state.records.findIndex((record) => record.id == state.currentRecord?.id);
             const prevIndex = (currentIndex - 1 + state.records.length) % state.records.length;
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}companies/${state.records[prevIndex].id}`);
-            const data = await response.json();
+            const response = await http.get(`companies/${state.records[prevIndex].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
@@ -98,8 +99,8 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
     first: ()=> set(async (state) => {
         set({ loading: true, error: null })
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}companies/${state.records[0].id}`);
-            const data = await response.json();
+            const response = await http.get(`companies/${state.records[0].id}`);
+            const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
