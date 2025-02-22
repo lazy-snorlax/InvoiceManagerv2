@@ -39,7 +39,7 @@ export const useAuthStore = create<AuthState>()(
             // set({ loading: true, error: null })
             try {
                 const response = await http.post('login', payload)
-                console.log(">>> login attempt: ", response.data.data)
+                // console.log(">>> login attempt: ", response.data.data)
                 set({ user: response.data.data, error: null })
             } catch (error) {
                 set({ error: error instanceof Error ? error.message : "Unknown error on login", loading: false })

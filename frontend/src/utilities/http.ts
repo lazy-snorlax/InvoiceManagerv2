@@ -14,14 +14,12 @@ export const http: AxiosInstance = axios.create({
 
 http.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
     const csrf = useAuthStore.getState().csrf
-    console.log(">>> csrf preflight 1", config)
     if (
         config.method &&
         ['post', 'put', 'delete'].includes(config.method.toLowerCase()) &&
         csrf === false &&
         config.csrfPreflight === undefined) 
     {
-        console.log(">>> csrf preflight 2")
         await useAuthStore.getState().csrfPreflight()
     }
     return config
@@ -36,12 +34,10 @@ http.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
         config.data = {}
     }
     
-    console.log(">>> csrf preflight 4", config)
     return config
 })
 
 http.interceptors.response.use(null, async (error) => {
-    console.log(">>> axios error 5", error, isAxiosError(error), error.response)
     if (isAxiosError(error) && error.response) {
         const route = useLocation().pathname
         const navigate = useNavigate()
