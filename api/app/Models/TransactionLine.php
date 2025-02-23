@@ -17,10 +17,8 @@ class TransactionLine extends Model
         'item',
         'description',
         'tax',
-        'gst_collected',
-        'gst_paid',
-        'debit',
-        'credit',
+        'gst',
+        'cost',
         'expense',
     ];
 
