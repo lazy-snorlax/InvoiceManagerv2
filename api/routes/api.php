@@ -29,6 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // TODO: Lookups =====================================================
     Route::get('/invoices', [Controllers\InvoiceController::class, 'index']);
     Route::get('/invoices/{id}', [Controllers\InvoiceController::class, 'show']);
+    Route::put('/invoices/{id}', [Controllers\InvoiceController::class, 'update']);
     Route::get('/invoice-list', Controllers\InvoiceListController::class);
     
     Route::get('/quotes', [Controllers\QuoteController::class, 'index']);
