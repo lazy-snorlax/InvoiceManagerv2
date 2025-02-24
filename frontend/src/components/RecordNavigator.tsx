@@ -13,7 +13,7 @@ const RecordNavigator = <TState, TActions, ReactElement>({
   }: RecordNavigatorProps<TState, TActions, ReactElement>) => {
 
     const { records, currentRecord, loading, error } = state;
-    const { next, previous, first, last } = actions;
+    const { next, previous, first, last, newRecord } = actions;
 
     const currentIndex = records.findIndex((record) => record.id == state.currentRecord?.id);
 
@@ -53,6 +53,7 @@ const RecordNavigator = <TState, TActions, ReactElement>({
                 <span>{`${currentIndex+1} of ${records.length}`}</span>
                 <button className='btn btn-ghost' onClick={next}>&#10148;</button>
                 <button className='btn btn-ghost' onClick={last}>&#10148;|</button>
+                <button className='btn btn-ghost' onClick={newRecord}>&#10148;*</button>
             </div>
         </>
     );
