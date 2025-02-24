@@ -59,7 +59,7 @@ class InvoiceController extends Controller
                         'description' => $lineData['description'],
                         'item' => $lineData['item'],
                         'tax' => $lineData['tax'] / 100,
-                        'gst' => array_key_exists("gst", $lineData) ? $lineData['gst'] : $lineData['cost'] * ($lineData['tax'] / 100),
+                        'gst' => $lineData['cost'] * ($lineData['tax'] / 100),
                         'cost' => $lineData['cost'],
                         'expense' => $lineData['expense']
                     ]
