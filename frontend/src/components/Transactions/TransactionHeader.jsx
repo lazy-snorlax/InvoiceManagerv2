@@ -30,14 +30,14 @@ const TransactionHeader = ({ transaction, updateHead, deleteHead, lineFuncs }) =
             <input type="text" placeholder="Type here" className="input input-bordered w-full mt-2" name="description" defaultValue={trans.description} disabled={disabledHeader} onChange={handleOnChange} />
           </label>
 
-          <div className="mt-auto">
-            <button onClick={toggleCollapse} className="btn btn-ghost text-3xl">{isOpen ? '-' : '+'}</button>
+          <div className="mt-auto ms-auto join">
+            <button onClick={toggleCollapse} className="btn btn-ghost join-item"><span className="text-4xl">{isOpen ? '-' : '+'}</span></button>
             {disabledHeader ? 
-              <button className="btn btn-primary" onClick={editHeader}>Edit</button>
+              <button className="btn btn-primary join-item" onClick={editHeader}>Edit</button>
               : 
-              <button className="btn btn-success" onClick={updateHeader}>Update</button>
+              <button className="btn btn-success join-item" onClick={updateHeader}>Update</button>
             }
-            <button className="btn btn-error" onClick={removeHeader}>X</button>
+            <button className="btn btn-error join-item" onClick={removeHeader}>X</button>
           </div>
         </div>
 
