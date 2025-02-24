@@ -43,14 +43,14 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Account Type</span>
           </div>
-          <input type="text" defaultValue={"7 DAYS"} disabled className="input input-bordered w-full" name="credittype" />
+          <input type="text" defaultValue={"7 DAYS"} disabled className="input input-bordered w-full" name="credittype"  onChange={handle} />
         </label>
 
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Date</span>
           </div>
-          <input type="date" defaultValue={props.invoice.created_at} className="input input-bordered w-full" name="date" />
+          <input type="date" defaultValue={props.invoice.created_at} className="input input-bordered w-full" name="date" onChange={handle} />
         </label>
       </div>
 
@@ -66,14 +66,14 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Order No</span>
           </div>
-          <input type="text" defaultValue={props.invoice.orderNo} className="input input-bordered w-full" name="orderNo" />
+          <input type="text" defaultValue={props.invoice.orderNo} className="input input-bordered w-full" name="orderNo" onChange={handle} />
         </label>
 
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Business No</span>
           </div>
-          <input type="text" defaultValue={props.invoice.business_no} className="input input-bordered w-full" name="businessNo" />
+          <input type="text" defaultValue={props.invoice.business_no} className="input input-bordered w-full" name="businessNo" onChange={handle} />
         </label>
       </div>
 
@@ -82,7 +82,7 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Note</span>
           </div>
-          <input type="text" placeholder="Type here" defaultValue={props.invoice.note} className="input input-bordered w-full" name="note" />
+          <input type="text" placeholder="Type here" defaultValue={props.invoice.note} className="input input-bordered w-full" name="note" onChange={handle} />
         </label>
       </div>
     </div>
