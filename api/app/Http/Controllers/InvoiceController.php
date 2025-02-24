@@ -44,21 +44,25 @@ class InvoiceController extends Controller
         foreach ($request->input('transactions') as $headerData) {
             $header = $invoice->headers()->updateOrCreate(
                 ['id' => array_key_exists("id", $headerData) ? $headerData['id'] : null],
-                ['transaction_main_id' => $invoice['id']],
-                ['description' => $headerData['description']],
+                [
+                    'transaction_main_id' => $invoice['id'],
+                    'description' => $headerData['description']
+                ],
             );
 
             // Lines - update or create
             foreach ($headerData['lines'] as $lineData) {
                 $header->lines()->updateOrCreate(
                     ['id' => array_key_exists("id", $lineData) ? $lineData['id'] : null],
-                    ['transaction_header_id' => $header['id']],
-                    ['description' => $lineData['description']],
-                    ['item' => $lineData['item']],
-                    ['tax' => $lineData['tax'] / 100],
-                    ['gst' => array_key_exists("gst", $lineData) ? $lineData['gst'] : $lineData['cost'] * ($lineData['tax'] / 100)],
-                    ['cost' => $lineData['cost']],
-                    ['expense' => $lineData['expense']],
+                    [
+                        'transaction_header_id' => $header['id'],
+                        'description' => $lineData['description'],
+                        'item' => $lineData['item'],
+                        'tax' => $lineData['tax'] / 100,
+                        'gst' => array_key_exists("gst", $lineData) ? $lineData['gst'] : $lineData['cost'] * ($lineData['tax'] / 100),
+                        'cost' => $lineData['cost'],
+                        'expense' => $lineData['expense']
+                    ]
                 );
             }
         }
