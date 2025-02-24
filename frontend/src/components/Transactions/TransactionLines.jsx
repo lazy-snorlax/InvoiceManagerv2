@@ -9,6 +9,7 @@ const InvoiceTransLines = ({ lines, lineFuncs }) => {
 
   const handleAddLine = () => {
     const newLine = {
+      "id": null,
       "titleNo": list[0].titleNo,
       "item": (list.length + 1),
       "description": null,

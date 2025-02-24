@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../stores/auth";
 
 interface Props {};
 
 const Hero = (props: Props) => {
-    const { user, get_user } = useAuthStore()
+    const [ user, setUser] = useState(useAuthStore.getState().user)
+
+    useEffect(() => {
+        setUser(useAuthStore.getState().user)
+    }, [useAuthStore.getState().user])
 
     return (
         <div id="hero" className="hero bg-base-200 min-h-screen">
