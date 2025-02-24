@@ -119,41 +119,42 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     }),
-    save: () => set((state) => {
-        // set({ currentRecord: invoice })
+    save: () => set(async (state) => {
         console.log(">>> save: Invoice currentRecord", state.currentRecord)
+        try {
+            const response = await http.put(`invoices/${state.currentRecord.id}`, state.currentRecord)
+            const data = response.data
+            set({ currentRecord: data.data })
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message: "Unknown error" })
+        }
         return { currentRecord: state.currentRecord }
     }),
 
     /** -- Transaction Head ----------------------- */
-    // TODO: api call to enter new TransHeader into db
     addNewTransactionHead: (trans) => set((state) => {
         return { currentRecord: { ...state.currentRecord, transactions: trans, } }
     }),
     
-    // TODO: api call to update TransHead directly and return result?
-    updateTransactionHead: (trans) => set((state) => ({
-         currentRecord: {
-            ...state.currentRecord,
-            transactions: state.currentRecord?.transactions.map((item) => 
-                item.titleNo === trans.titleNo ? { ...item, ...trans } : item
-            ),
-        },
-    })),
+    updateTransactionHead: (updatedTrans) => set((state) => {
+        const trans = state.currentRecord?.transactions.map((item) => {
+            if (item.id === updatedTrans.id) {
+                return { ...item, ...updatedTrans }
+            }
+            return item
+        })
+        return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    }),
 
-    // TODO: api call to remove TransHead and return new currentRecord?
-    removeTransactionHead: (trans) => set((state) => ({
-        currentRecord: {
-            ...state.currentRecord,
-            transactions: state.currentRecord?.transactions.filter((item) => 
-                item.titleNo !== trans.titleNo)
-        }
-    })),
+    removeTransactionHead: (removeTrans) => set((state) => {
+        const trans = state.currentRecord?.transactions.filter((item) => item.id !== removeTrans.id)
+        return { currentRecord: {...state.currentRecord, transactions: trans} }
+    }),
 
     /** -- Transaction Lines ----------------------- */
     addNewTransactionLine: (line) => set((state) => {
         const trans = state.currentRecord?.transactions.map((item) => {
-            if (item.titleNo === line.titleNo) {
+            if (item.id == line.titleNo) {
                 return { ...item, lines: [ ...item.lines, line] }
             }
             return item
@@ -163,7 +164,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
 
     updateTransactionLine: (updatedLine) => set((state) => {
         const trans = state.currentRecord?.transactions.map((item) => {
-            if (item.titleNo === updatedLine.titleNo) {
+            if (item.id == updatedLine.titleNo) {
                 const lines = item.lines.map((line) => {
                     if (line.item === updatedLine.item) {
                         return updatedLine
@@ -179,7 +180,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
 
     removeTransactionLine: (removedLine) => set((state) => {
         const trans = state.currentRecord?.transactions.map((item) => {
-            if (item.titleNo === removedLine.titleNo){
+            if (item.id == removedLine.titleNo){
                 const lines = item.lines.filter((line) => line.item !== removedLine.item)
                 return { ...item, lines}
             }
