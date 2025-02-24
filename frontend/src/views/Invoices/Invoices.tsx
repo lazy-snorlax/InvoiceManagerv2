@@ -4,7 +4,7 @@ import { useInvoiceStore } from '../../stores/invoice'
 import { useEffect } from 'react'
 
 const Invoices = () => {
-    const { records, currentRecord, loading, error, fetchRecords, fetchLatestRecord, next, previous, first, last } = useInvoiceStore()
+    const { records, currentRecord, loading, error, fetchRecords, fetchLatestRecord, next, previous, first, last, newRecord } = useInvoiceStore()
 
     useEffect(() => {
         fetchRecords(),
@@ -24,6 +24,7 @@ const Invoices = () => {
                 previous,
                 first,
                 last,
+                newRecord
             }} 
             RenderComponent={InvoicePage}
             />

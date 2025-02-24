@@ -29,6 +29,7 @@ interface InvoiceState {
     first: () => void
     last: () => void
     save: () => void
+    newRecord: () => void
 
     // Actions for TransHead
     addNewTransactionHead: (trans: {}) => void
@@ -121,15 +122,43 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
     }),
     save: () => set(async (state) => {
         console.log(">>> save: Invoice currentRecord", state.currentRecord)
-        try {
-            const response = await http.put(`invoices/${state.currentRecord.id}`, state.currentRecord)
-            const data = response.data
-            set({ currentRecord: data.data })
-        } catch (error) {
-            set({ error: error instanceof Error ? error.message: "Unknown error" })
+        if (state.currentRecord?.id == null) {
+            try {
+                const response = await http.post(`invoices`, state.currentRecord)
+                const records = [...state.records, {id: response.data.data.id}]
+                set({ loading: false,currentRecord: response.data.data, records: records })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message: "Unknown error" })
+            }
+        } else {
+            try {
+                const response = await http.put(`invoices/${state.currentRecord.id}`, state.currentRecord)
+                const data = response.data
+                set({ currentRecord: data.data })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message: "Unknown error" })
+            }
         }
         return { currentRecord: state.currentRecord }
     }),
+    newRecord: () => {        
+        try {
+            const newRecord: Invoice = {
+                id: null,
+                company: null,
+                credittype: null,
+                created_at: null,
+                note: null,
+                paid: null,
+                type: null,
+                paymentdetail: null,
+                transactions: []
+            }
+            set({ currentRecord: newRecord, error: null })
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message: "Unknown error" })
+        }
+    },
 
     /** -- Transaction Head ----------------------- */
     addNewTransactionHead: (trans) => set((state) => {
@@ -164,9 +193,9 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
 
     updateTransactionLine: (updatedLine) => set((state) => {
         const trans = state.currentRecord?.transactions.map((item) => {
-            if (item.id == updatedLine.titleNo) {
+            if (item.id == updatedLine.titleNo || item.titleNo == updatedLine.titleNo) {
                 const lines = item.lines.map((line) => {
-                    if (line.item === updatedLine.item) {
+                    if (line.item == updatedLine.item) {
                         return updatedLine
                     }
                     return line
