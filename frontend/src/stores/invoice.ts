@@ -121,7 +121,6 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         }
     }),
     save: () => set(async (state) => {
-        console.log(">>> save: Invoice currentRecord", state.currentRecord)
         if (state.currentRecord?.id == null) {
             try {
                 const response = await http.post(`invoices`, state.currentRecord)
