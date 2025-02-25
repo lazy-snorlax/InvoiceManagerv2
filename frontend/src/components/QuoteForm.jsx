@@ -41,14 +41,14 @@ const QuoteForm = (props) => {
           <div className="label">
             <span className="label-text">Credit Type</span>
           </div>
-          <input type="text" defaultValue={props.invoice.credittype} className="input input-bordered w-full" />
+          <input type="text" defaultValue={props.invoice.credittype} className="input input-bordered w-full" name="credittype" onChange={handle} />
         </label>
 
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Date</span>
           </div>
-          <input type="date" defaultValue={props.invoice.date} className="input input-bordered w-full" />
+          <input type="date" defaultValue={props.invoice.date} className="input input-bordered w-full" name="date" onChange={handle} />
         </label>
       </div>
 
@@ -82,7 +82,7 @@ const QuoteForm = (props) => {
           <div className="label">
             <span className="label-text">Business No</span>
           </div>
-          <input type="text" defaultValue={props.invoice.businessNo} className="input input-bordered w-full" />
+          <input type="text" defaultValue={props.invoice.businessNo} className="input input-bordered w-full" name="businessNo" onChange={handle} />
         </label>
       </div>
 
@@ -110,7 +110,7 @@ const QuoteForm = (props) => {
           <div className="label">
             <span className="label-text">Note</span>
           </div>
-          <input type="text" placeholder="Type here" defaultValue={props.invoice.note} className="input input-bordered w-full" />
+          <input type="text" placeholder="Type here" defaultValue={props.invoice.note} className="input input-bordered w-full" name="note" onChange={handle} />
         </label>
       </div>
     </div>
