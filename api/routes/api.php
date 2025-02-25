@@ -24,23 +24,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', Controllers\LoggedInController::class);
     Route::put('/user', Controllers\UpdateAccountDetailsController::class);
     Route::put('/user/password', Controllers\UpdatePasswordController::class);
-
     
-    // TODO: Lookups =====================================================
+    // Lookups =====================================================
     Route::get('/invoices', [Controllers\InvoiceController::class, 'index']);
     Route::get('/invoices/{id}', [Controllers\InvoiceController::class, 'show']);
     Route::post('/invoices', [Controllers\InvoiceController::class, 'store']);
     Route::put('/invoices/{id}', [Controllers\InvoiceController::class, 'update']);
-    Route::get('/invoice-list', Controllers\InvoiceListController::class);
     
     Route::get('/quotes', [Controllers\QuoteController::class, 'index']);
     Route::get('/quotes/{id}', [Controllers\QuoteController::class, 'show']);
     Route::post('/quotes', [Controllers\QuoteController::class, 'store']);
     Route::put('/quotes/{id}', [Controllers\QuoteController::class, 'update']);
-    Route::get('/quote-list', Controllers\QuoteListController::class);
     
     Route::get('/companies', [Controllers\CompanyController::class, 'index']);
     Route::get('/companies/{id}', [Controllers\CompanyController::class, 'show']);
-    Route::get('/company-list', Controllers\CompanyListController::class);
+    Route::post('/companies', [Controllers\CompanyController::class, 'store']);
+    Route::put('/companies/{id}', [Controllers\CompanyController::class, 'update']);
     
+    Route::get('/invoice-list', Controllers\InvoiceListController::class);
+    Route::get('/quote-list', Controllers\QuoteListController::class);
+    Route::get('/company-list', Controllers\CompanyListController::class);
 });
