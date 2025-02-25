@@ -35,10 +35,9 @@ interface CustomerState {
     next: () => void
     previous: () => void
     first: () => void
+    last: () => void
     save: () => void
-
-    // Misc. Actions
-    // fetchOptions: (state: CustomerState) => void
+    newRecord: () => void
 }
 
 export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
@@ -106,13 +105,61 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     }),
-    // TODO: api post/update based on currentRecord id
-    save: () => set((state) => {
-        if (!state.currentRecord.id) {
-            console.log(">>> post: Customer currentRecord ", state.currentRecord)
+    last: ()=> set(async (state) => {
+        set({ loading: true, error: null })
+        try {
+            const response = await http.get(`companies/${state.records[state.records.length-1].id}`);
+            const data = await response.data;
+            set({ loading: false, currentRecord: data.data || null });
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+        }
+    }),
+    
+    save: () => set(async(state) => {
+        if (state.currentRecord?.id == null) {
+            try {
+                const response = await http.post(`companies`, state.currentRecord)
+                const records = [...state.records, {id: response.data.data.id}]
+                set({ loading: false, currentRecord: response.data.data, records: records })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            }
         } else {
-            console.log(">>> update: Customer currentRecord ", state.currentRecord)
+            try {
+                const response = await http.put(`companies/${state.records[0].id}`, state.currentRecord);
+                const data = response.data
+                set({ currentRecord: data.data })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            }
         }
         return { currentRecord: state.currentRecord }
-    })
+    }),
+
+    newRecord: () => {
+        try {
+            const newRecord: Customer = {
+                id: null,
+                company_name: null,
+                contact_name: null,
+                company_type: null,
+                abn: null,
+                phone: null,
+                mobile: null,
+                email: null,
+                location_address: null,
+                location_city: null,
+                location_state: null,
+                location_post_code: null,
+                postal_address: null,
+                postal_city: null,
+                postal_state: null,
+                postal_post_code: null,
+            }
+            set({ currentRecord: newRecord, error: null })
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message: "Unknown error" })
+        }
+    }
 })))

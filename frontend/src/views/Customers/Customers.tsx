@@ -4,7 +4,7 @@ import CustomerPage from "./Customer"
 import { useEffect } from 'react'
 
 const Customers = () => {
-    const { records, currentRecord, loading, error, fetchRecords, fetchFirstRecord, next, previous } = useCustomerStore()
+    const { records, currentRecord, loading, error, fetchRecords, fetchFirstRecord, next, previous, first, last, newRecord } = useCustomerStore()
 
     useEffect(() => {
         fetchRecords(),
@@ -21,7 +21,10 @@ const Customers = () => {
             }}
             actions={{
                 next, 
-                previous
+                previous,
+                first,
+                last,
+                newRecord
             }} 
             RenderComponent={CustomerPage} 
             />
