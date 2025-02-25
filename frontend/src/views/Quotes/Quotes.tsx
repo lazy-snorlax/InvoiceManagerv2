@@ -4,7 +4,7 @@ import Quote from "./Quote"
 import { useQuoteStore } from '../../stores/quote'
 
 const Quotes = () => {
-    const { records, currentRecord, loading, error, fetchRecords, fetchLatestRecord, next, previous, first, last } = useQuoteStore()
+    const { records, currentRecord, loading, error, fetchRecords, fetchLatestRecord, next, previous, first, last, newRecord } = useQuoteStore()
 
     useEffect(() => {
         fetchRecords(),
@@ -24,6 +24,7 @@ const Quotes = () => {
                 previous,
                 first,
                 last,
+                newRecord
             }} 
             RenderComponent={Quote}
             />

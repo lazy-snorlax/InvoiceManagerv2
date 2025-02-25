@@ -29,6 +29,7 @@ interface QuoteState {
     first: () => void
     last: () => void
     save: () => void
+    newRecord: () => void
 
     // Actions for TransHead
     addNewTransactionHead: (trans: {}) => void
@@ -117,11 +118,44 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
         }
     }),
 
-    save: () => set((state) => {
-        // set({ currentRecord: invoice })
-        console.log(">>> save: Quote currentRecord", state.currentRecord)
+    save: () => set(async (state) => {
+        if (state.currentRecord?.id == null) {
+            try {
+                const response = await http.post(`quotes`, state.currentRecord)
+                const records = [...state.records, {id: response.data.data.id}]
+                set({ loading: false,currentRecord: response.data.data, records: records })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message: "Unknown error" })
+            }
+        } else {
+            try {
+                const response = await http.put(`quotes/${state.currentRecord.id}`, state.currentRecord)
+                const data = response.data
+                set({ currentRecord: data.data })
+            } catch (error) {
+                set({ error: error instanceof Error ? error.message: "Unknown error" })
+            }
+        }
         return { currentRecord: state.currentRecord }
     }),
+    newRecord: () => {
+        try {
+            const newRecord: Quote = {
+                id: null,
+                company: null,
+                credittype: null,
+                date: null,
+                note: null,
+                paid: null,
+                paymentdetail: null,
+                type: null,
+                transactions: []
+            }
+            set({ currentRecord: newRecord, error:null })
+        } catch (error) {
+            set({ error: error instanceof Error ? error.message: "Unknown error" })
+        }
+    },
 
     /** -- Transaction Head ----------------------- */
     // TODO: api call to enter new TransHeader into db
@@ -130,23 +164,21 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
     }),
     
     // TODO: api call to update TransHead directly and return result?
-    updateTransactionHead: (trans) => set((state) => ({
-         currentRecord: {
-            ...state.currentRecord,
-            transactions: state.currentRecord?.transactions.map((item) => 
-                item.titleNo === trans.titleNo ? { ...item, ...trans } : item
-            ),
-        },
-    })),
+    updateTransactionHead: (updatedTrans) => set((state) => {
+        const trans = state.currentRecord?.transactions.map((item) => {
+            if (item.id === updatedTrans.id) {
+                return { ...item, ...updatedTrans }
+            }
+            return item
+        })
+        return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    }),
 
     // TODO: api call to remove TransHead and return new currentRecord?
-    removeTransactionHead: (trans) => set((state) => ({
-        currentRecord: {
-            ...state.currentRecord,
-            transactions: state.currentRecord?.transactions.filter((item) => 
-                item.titleNo !== trans.titleNo)
-        }
-    })),
+    removeTransactionHead: (removeTrans) => set((state) => {
+        const trans = state.currentRecord?.transactions.filter((item) => item.id !== removeTrans.id)
+        return { currentRecord: {...state.currentRecord, transactions: trans} }
+    }),
 
 
     /** -- Transaction Lines ----------------------- */
@@ -162,7 +194,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
 
     updateTransactionLine: (updatedLine) => set((state) => {
         const trans = state.currentRecord?.transactions.map((item) => {
-            if (item.titleNo === updatedLine.titleNo) {
+            if (item.titleNo == updatedLine.titleNo || item.titleNo == updatedLine.titleNo) {
                 const lines = item.lines.map((line) => {
                     if (line.item === updatedLine.item) {
                         return updatedLine
