@@ -1,13 +1,36 @@
+import { useEffect } from "react"
 import SettingsForm from "../components/SettingsForm"
+import { useSettingsStore } from "../stores/settings"
 
 const SettingsPage = () => {
+    const { settings, loading, error, getSettings, setSettings, save } = useSettingsStore()
+
+    useEffect(() => {
+        getSettings()
+    }, [getSettings])
+
+    if (loading) { return <div>Loading...</div> }
+    if (error) { return <div>Error: {error}</div> }
+    if (settings == null) {
+        return (
+            <div className="min-h-screen flex flex-col">
+                <div className="grow">
+                    <h1>No records found</h1>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <>
             {/* <h1 className="h1">Set settings for the application here</h1> */}
             <div className="container mx-auto mt-4">
                 <div className="card bg-base-300 w-100">
                     <div className="card-body items-center text-center">
-                        <SettingsForm />
+                        <SettingsForm settings={settings} update={setSettings} />
+                    </div>
+                    <div className="card-actions my-3 justify-center">
+                        <button className="btn btn-success" onClick={save}>Save Settings</button>
                     </div>
                 </div>
             </div>
