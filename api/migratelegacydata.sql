@@ -103,3 +103,40 @@ select
 from [Table Credit Type]
 set IDENTITY_INSERT credit_types OFF
 
+-- Business Settings
+set IDENTITY_INSERT business_settings ON
+insert into business_settings(
+  id, 
+  user_id, 
+  business_name, 
+  contact_name, 
+  logo_path,
+  phone,
+  mobile,
+  email,
+  abn,
+  address,
+  city,
+  state,
+  post_code,
+  note1,
+  note2
+)
+select 
+	[Business ID],
+  1 as user_id,
+  [Business Name],
+  [Contact Name],
+  null,
+  [Phone1],
+  [Mobile1],
+  [Email Address1],
+  [ABN1],
+  [Address1],
+  [City1],
+  [State1],
+  [Post Code1],
+  [Note1],
+  [Note2]
+from [Table Business Detail]
+set IDENTITY_INSERT business_settings OFF
