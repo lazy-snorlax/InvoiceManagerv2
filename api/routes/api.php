@@ -35,6 +35,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::get('/quotes', [Controllers\QuoteController::class, 'index']);
     Route::get('/quotes/{id}', [Controllers\QuoteController::class, 'show']);
+    Route::post('/quotes', [Controllers\QuoteController::class, 'store']);
+    Route::put('/quotes/{id}', [Controllers\QuoteController::class, 'update']);
     Route::get('/quote-list', Controllers\QuoteListController::class);
     
     Route::get('/companies', [Controllers\CompanyController::class, 'index']);

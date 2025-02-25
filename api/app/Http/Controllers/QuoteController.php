@@ -23,4 +23,82 @@ class QuoteController extends Controller
         abort_if($id->type != 3, 500, "This is not a quote!");
         return new InvoiceResource($id->load('headers.lines'));
     }
+
+    public function store(Request $request)
+    {
+        $quote = new TransactionMain();
+        $quote->fill([
+            'business_no' => $request->input('businessNo'),
+            'company_no' => $request->input('company'),
+            'order_no' => $request->input('orderNo'),
+            'note' => $request->input('note'),
+        ]);
+        $quote->type = 3;
+        $quote->save();
+
+        // Headers - update or create
+        foreach ($request->input('transactions') as $headerData) {
+            $header = $quote->headers()->updateOrCreate(
+                ['id' => array_key_exists("id", $headerData) ? $headerData['id'] : null],
+                [
+                    'transaction_main_id' => $quote['id'],
+                    'description' => $headerData['description']
+                ],
+            );
+            // Lines - update or create
+            foreach ($headerData['lines'] as $lineData) {
+                $header->lines()->updateOrCreate(
+                    ['id' => array_key_exists("id", $lineData) ? $lineData['id'] : null],
+                    [
+                        'transaction_header_id' => $header['id'],
+                        'description' => $lineData['description'],
+                        'item' => $lineData['item'],
+                        'tax' => $lineData['tax'] / 100,
+                        'gst' => $lineData['cost'] * ($lineData['tax'] / 100),
+                        'cost' => $lineData['cost'],
+                        'expense' => $lineData['expense']
+                    ]
+                );
+            }
+        }
+        return new InvoiceResource($quote->load(['headers.lines']));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $quote = TransactionMain::findOrFail($id);
+        $quote->update([
+            'business_no' => $request->input('businessNo'),
+            'company_no' => $request->input('company'),
+            'order_no' => $request->input('orderNo'),
+            'note' => $request->input('note'),
+        ]);
+
+        // Headers - update or create
+        foreach ($request->input('transactions') as $headerData) {
+            $header = $quote->headers()->updateOrCreate(
+                ['id' => array_key_exists("id", $headerData) ? $headerData['id'] : null],
+                [
+                    'transaction_main_id' => $quote['id'],
+                    'description' => $headerData['description']
+                ],
+            );
+            // Lines - update or create
+            foreach ($headerData['lines'] as $lineData) {
+                $header->lines()->updateOrCreate(
+                    ['id' => array_key_exists("id", $lineData) ? $lineData['id'] : null],
+                    [
+                        'transaction_header_id' => $header['id'],
+                        'description' => $lineData['description'],
+                        'item' => $lineData['item'],
+                        'tax' => $lineData['tax'] / 100,
+                        'gst' => $lineData['cost'] * ($lineData['tax'] / 100),
+                        'cost' => $lineData['cost'],
+                        'expense' => $lineData['expense']
+                    ]
+                );
+            }
+        }
+        return new InvoiceResource($quote->load(['headers.lines']));
+    }
 }
