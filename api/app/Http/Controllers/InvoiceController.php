@@ -28,7 +28,7 @@ class InvoiceController extends Controller
     {
         $invoice = new TransactionMain();
         $invoice->fill([
-            'business_no' => $request->input('businessNo'),
+            'business_no' => $request->user()->businessSettings()->id,
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
@@ -68,7 +68,7 @@ class InvoiceController extends Controller
     {
         $invoice = TransactionMain::findOrFail($id);
         $invoice->update([
-            'business_no' => $request->input('businessNo'),
+            'business_no' => $request->user()->businessSettings()->id,
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),

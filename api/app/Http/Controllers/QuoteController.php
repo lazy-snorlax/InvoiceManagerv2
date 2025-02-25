@@ -28,7 +28,7 @@ class QuoteController extends Controller
     {
         $quote = new TransactionMain();
         $quote->fill([
-            'business_no' => $request->input('businessNo'),
+            'business_no' => $request->user()->businessSettings()->id,
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
@@ -68,7 +68,7 @@ class QuoteController extends Controller
     {
         $quote = TransactionMain::findOrFail($id);
         $quote->update([
-            'business_no' => $request->input('businessNo'),
+            'business_no' => $request->user()->businessSettings()->id,
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
