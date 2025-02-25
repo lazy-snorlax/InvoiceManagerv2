@@ -27,12 +27,12 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $invoice = new TransactionMain();
-        $invoice->fill($request->only([
-            'business_no',
-            'company_no',
-            'order_no',
-            'note',
-        ]));
+        $invoice->fill([
+            'business_no' => $request->input('businessNo'),
+            'company_no' => $request->input('company'),
+            'order_no' => $request->input('orderNo'),
+            'note' => $request->input('note'),
+        ]);
         $invoice->type = 1; // Save As Invoice
         $invoice->save();
 
@@ -67,13 +67,12 @@ class InvoiceController extends Controller
     public function update(Request $request, $id) 
     {
         $invoice = TransactionMain::findOrFail($id);
-        $invoice->update($request->only([
-            'business_no',
-            'company_no',
-            'order_no',
-            'note',
-            'created_at',
-        ]));
+        $invoice->update([
+            'business_no' => $request->input('businessNo'),
+            'company_no' => $request->input('company'),
+            'order_no' => $request->input('orderNo'),
+            'note' => $request->input('note'),
+        ]);
         // Headers - update or create
         foreach ($request->input('transactions') as $headerData) {
             $header = $invoice->headers()->updateOrCreate(
