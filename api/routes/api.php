@@ -31,6 +31,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/invoices', [Controllers\InvoiceController::class, 'store']);
     Route::put('/invoices/{id}', [Controllers\InvoiceController::class, 'update']);
     
+    Route::get('/invoice-pdf/{id}', Controllers\InvoicePDFController::class);
+    
     // Quotes =====================================================
     Route::get('/quotes', [Controllers\QuoteController::class, 'index']);
     Route::get('/quotes/{id}', [Controllers\QuoteController::class, 'show']);
