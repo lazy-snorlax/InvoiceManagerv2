@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
     unixodbc-dev \
     gnupg \
     ca-certificates \
+    libfreetype6-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libzip-dev \
     curl \
     git \
     zip \
@@ -20,6 +24,12 @@ RUN apt-get update && apt-get install -y \
     odbcinst1debian2 \
     locales-all \
     && rm -rf /var/lib/apt/lists/*
+
+# Install GD
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    && docker-php-ext-install gd
 
 # Install Microsoft ODBC Driver for SQL Server
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
