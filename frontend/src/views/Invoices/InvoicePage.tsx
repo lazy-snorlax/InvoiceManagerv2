@@ -17,6 +17,8 @@ const InvoicePage = ({ record }) => {
         removeTransactionLine,
 
         setCurrentRecord,
+
+        downloadPdf,
      } = useInvoiceStore()
     const [invoice, setInvoice] = useState(record)
     const [transactions, setTransactions] = useState(invoice.transactions)
@@ -74,8 +76,8 @@ const InvoicePage = ({ record }) => {
             <div className="sticky bottom-0 card bg-base-300 w-100 mt-3 z-10">
                 <div className="card-body items-center text-center py-1">
                     <div className="grid grid-cols-10 grid-rows-1 gap-4">
-                        <button className="btn btn-primary">Preview Invoice</button>
-                        <button className="btn btn-primary">Print Invoice</button>
+                        <button className="btn btn-primary" onClick={downloadPdf} >Preview Invoice</button>
+                        {/* <button className="btn btn-primary">Print Invoice</button> */}
                         <button className="btn btn-success" onClick={handleSave}>Save Invoice</button>
                         <span className="col-span-4"></span>
                         <span className="my-auto col-span-1">Item Excl Total: ${(calculateCost())}</span>

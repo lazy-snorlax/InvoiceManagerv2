@@ -36,11 +36,12 @@ interface InvoiceState {
     updateTransactionHead: (trans: {}) => void
     removeTransactionHead: (trans: {}) => void
 
-    // TODO: Actions for TransLines
+    // Actions for TransLines
     addNewTransactionLine: (trans: {}) => void
     updateTransactionLine: (trans: {}) => void
     removeTransactionLine: (trans: {}) => void
 
+    downloadPdf: () => void
 }
 
 export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
@@ -215,5 +216,16 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             return item
         })
         return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    }),
+
+    downloadPdf: () => set(async (state) => {
+        await http.get(`invoice-pdf/${state.currentRecord.id}`, {
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json' },
+            params: { 'type': 'pdf' }
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            window.open(url, '_blank')
+        })
     })
 })))
