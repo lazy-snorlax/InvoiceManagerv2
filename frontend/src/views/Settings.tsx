@@ -38,7 +38,9 @@ const SettingsPage = () => {
                         <SettingsForm settings={settings} update={setSettings} />
                         <div className="">
                             <input type="file" className="file-input file-input-bordered w-full max-w-xs" onChange={handleImg} />
-                            <img src={imgSrc} alt="Logo" width={200} height={200} />
+                            <div className="border">
+                                <img className="border" src={imgSrc} alt="Logo" width={362} height={203} />
+                            </div>
                         </div>
                     </div>
                     <div className="card-actions my-3 justify-center">
