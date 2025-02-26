@@ -17,6 +17,7 @@ const Quote = ({ record }) => {
         removeTransactionLine,
 
         setCurrentRecord,
+        downloadPdf
     } = useQuoteStore()
 
     const [quote, setQuote] = useState(record)
@@ -77,8 +78,8 @@ const Quote = ({ record }) => {
             <div className="sticky bottom-0 card bg-base-300 w-100 mt-3 z-10">
                 <div className="card-body items-center text-center py-1">
                     <div className="grid grid-cols-10 grid-rows-1 gap-4">
-                        <button className="btn btn-primary">Preview Quote</button>
-                        <button className="btn btn-primary">Print Quote</button>
+                        <button className="btn btn-primary" onClick={downloadPdf}>Preview Quote</button>
+                        {/* <button className="btn btn-primary">Print Quote</button> */}
                         <button className="btn btn-success" onClick={handleSave}>Save Quote</button>
                         <span className="col-span-4"></span>
                         <span className="my-auto col-span-1">Item Excl Total: ${(calculateCost())}</span>

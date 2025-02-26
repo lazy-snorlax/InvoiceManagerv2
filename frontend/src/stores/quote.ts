@@ -40,6 +40,8 @@ interface QuoteState {
     addNewTransactionLine: (trans: {}) => void
     updateTransactionLine: (trans: {}) => void
     removeTransactionLine: (trans: {}) => void
+
+    downloadPdf: () => void
 }
 
 export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
@@ -217,5 +219,16 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             return item
         })
         return { currentRecord: {...state.currentRecord, transactions: trans,} }
+    }),
+
+    downloadPdf: () => set(async (state) => {
+        await http.get(`quote-pdf/${state.currentRecord.id}`, {
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json' },
+            params: { 'type': 'pdf' }
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            window.open(url, '_blank')
+        })
     })
 })))
