@@ -47,9 +47,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/settings', [Controllers\BusinessSettingController::class, 'index']);
     Route::post('/settings', [Controllers\BusinessSettingController::class, 'store']);
     Route::put('/settings/{id}', [Controllers\BusinessSettingController::class, 'update']);
+
+    // Logo ========================================================
+    Route::get('/logo', [Controllers\LogoController::class, 'show']);
+    Route::post('/logo', [Controllers\LogoController::class, 'store'])->middleware('uploads');
     
-    // Lists =====================================================
+    // Lists =======================================================
     Route::get('/invoice-list', Controllers\InvoiceListController::class);
     Route::get('/quote-list', Controllers\QuoteListController::class);
     Route::get('/company-list', Controllers\CompanyListController::class);
+    
+    // Reports =====================================================
+    // Route::get('/');
 });
