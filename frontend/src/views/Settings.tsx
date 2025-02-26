@@ -1,9 +1,17 @@
-import { useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import SettingsForm from "../components/SettingsForm"
 import { useSettingsStore } from "../stores/settings"
 
 const SettingsPage = () => {
-    const { settings, loading, error, getSettings, setSettings, save } = useSettingsStore()
+    const { settings, loading, error, getSettings, setSettings, uploadLogo, save } = useSettingsStore()
+    const [imgSrc, setImgSrc] = useState(import.meta.env.VITE_API_URL + 'logo');
+
+    const handleImg = (event) => {
+        setImgSrc(URL.createObjectURL(event.target.files[0]))
+        const payload = new FormData()
+        payload.append('file', event.target.files[0])
+        uploadLogo(payload)
+    }
 
     useEffect(() => {
         getSettings()
@@ -28,6 +36,10 @@ const SettingsPage = () => {
                 <div className="card bg-base-300 w-100">
                     <div className="card-body items-center text-center">
                         <SettingsForm settings={settings} update={setSettings} />
+                        <div className="">
+                            <input type="file" className="file-input file-input-bordered w-full max-w-xs" onChange={handleImg} />
+                            <img src={imgSrc} alt="Logo" width={200} height={200} />
+                        </div>
                     </div>
                     <div className="card-actions my-3 justify-center">
                         <button className="btn btn-success" onClick={save}>Save Settings</button>

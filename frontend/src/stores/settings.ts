@@ -26,6 +26,8 @@ interface SettingsState {
 
     getSettings: () => void
     setSettings: () => void
+    getLogo: () => void
+    uploadLogo: (payload) => void
     save: () => void
 }
 
@@ -46,6 +48,22 @@ export const useSettingsStore = create<SettingsState>()(
         },
 
         setSettings: (updatedSettings: Settings) => set({ settings: updatedSettings }),
+        getLogo: async () => {
+            try {
+                await http.get('logo')
+            } catch (error) {
+                console.log(">>> getLogo err: ", error)
+            }
+        },
+        uploadLogo: async (payload) => {
+            try {
+                const response = http.post(`logo`, payload, {
+                    headers: { 'Content-Type': undefined }
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        },
         save: () => set(async (state) => {
             if (state.settings?.id == null) {
                 try {
