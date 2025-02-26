@@ -26,13 +26,17 @@ const Navbar = (props) => {
                 <Link to="/">Invoice Manager</Link>
             </div>
             <div className="hidden flex-none lg:block">
-                <ul className="menu menu-horizontal">
-                    <li><NavLink to="/invoices" className="">Invoices</NavLink></li>
-                    <li><NavLink to="/quotes" className="">Quotes</NavLink></li>
-                    <li><NavLink to="/customers" className="">Customers</NavLink></li>
-                    <li><NavLink to="/reports" className="">Reports</NavLink></li>
-                    <li><NavLink to="/settings">Settings</NavLink></li>
-                </ul>
+                {user != null ? (
+                    <ul className="menu menu-horizontal">
+                        <li><NavLink to="/invoices" className="">Invoices</NavLink></li>
+                        <li><NavLink to="/quotes" className="">Quotes</NavLink></li>
+                        <li><NavLink to="/customers" className="">Customers</NavLink></li>
+                        <li><NavLink to="/reports" className="">Reports</NavLink></li>
+                        <li><NavLink to="/settings">Settings</NavLink></li>
+                    </ul>
+                ) : (
+                    <ul></ul>
+                )}
             </div>
             <div className="hidden flex-none lg:block">
                 { user != null ? (
