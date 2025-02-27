@@ -42,6 +42,7 @@ interface InvoiceState {
     removeTransactionLine: (trans: {}) => void
 
     downloadPdf: () => void
+    downloadCSV: (range: String|null, start: String| null, end: String|null) => void
 }
 
 export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
@@ -226,6 +227,28 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
         }).then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]))
             window.open(url, '_blank')
+        })
+    }),
+
+    downloadCSV: (range, start=null, end=null) => set(async (state) => {
+        const params = {
+            "type": "csv",
+            "q" : range,
+            "start": start,
+            "end": end,
+        }
+        await http.get(`invoice-report?q=${range}`, {
+            responseType: 'blob',
+            headers: { 'Content-Type': 'application/json' },
+            params
+        }).then(response => {
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(new Blob([response.data]))
+            link.download = 'Sales Report.csv'
+            link.click()
+        })
+        .catch(error => {
+            console.log(">>> CSV Report Error: ", error)
         })
     })
 })))
