@@ -1,0 +1,39 @@
+volumes:
+  dbdata:
+
+services:
+  app-fpm:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile.prod
+    image: invoice-manager-build-fpm
+    expose:
+      - "9000"
+  app-api:
+    build:
+      context: ./api/
+      dockerfile: nginx.docker
+    image: invoice-manager-build-api
+    ports:
+      - "8000:80"
+    depends_on:
+      - app-fpm
+  app-frontend:
+    build:
+      context: ./frontend/
+      dockerfile: prod.docker
+    image: invoice-manager-build-frontend
+    ports:
+      - "8080:80"
+  mysql:
+    image: mysql:8.0.23
+    ports:
+      - "33061:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+    environment:
+      - "MYSQL_DATABASE=invoice-manager"
+      - "MYSQL_USER=invoice-manager"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"

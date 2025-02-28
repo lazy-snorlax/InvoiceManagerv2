@@ -1,0 +1,55 @@
+volumes:
+  database:
+
+services:
+    build-testing:
+        image: mysql:8.0.23
+        ports:
+        - "3306:3306"
+        tmpfs:
+        - /var/lib/mysql
+        volumes:
+        - ./docker/mysql:/docker-entrypoint-initdb.d
+        environment:
+        - "MYSQL_DATABASE=testing"
+        - "MYSQL_USER=testing"
+        - "MYSQL_PASSWORD=secret"
+        - "MYSQL_ROOT_PASSWORD=secret"
+        command: ["--innodb_flush_log_at_trx_commit=2"]
+    build-api:
+        build:
+            context: ./api/
+            dockerfile: nginx.docker
+        ports:
+            - "8000:80"
+        links:
+            - build-fpm
+        volumes:
+            - ./api/:/var/www
+    build-fpm:
+        build:
+            context: ./api/
+        tmpfs:
+            - /tmp
+        volumes:
+            - ./docker/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./api:/var/www
+            - ~/.ssh:/home/ubuntu/.ssh
+        environment:
+            - "DB_PORT=3306"
+            - "DB_TESTING_HOST=testing"
+        user: ubuntu
+    build-frontend:
+        build:
+            context: ./frontend
+        ports:
+            - 8080:8080
+        volumes:
+            - ./frontend/:/opt/app
+        user: node
+    build-mail:
+        image: maildev/maildev
+        ports:
+            - "8025:80"
+        command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+
