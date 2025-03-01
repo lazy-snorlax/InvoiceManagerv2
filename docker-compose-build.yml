@@ -14,7 +14,7 @@ services:
             MSSQL_SA_PASSWORD: secret*12345
             ACCEPT_EULA: Y
         command: ["--innodb_flush_log_at_trx_commit=2"]
-    api:
+    build-api:
         build:
             context: ./api/
             dockerfile: nginx.docker
@@ -24,7 +24,7 @@ services:
             - fpm
         volumes:
             - ./api/:/var/www
-    fpm:
+    build-fpm:
         build:
             context: ./api/
         tmpfs:
@@ -37,7 +37,7 @@ services:
             - "DB_PORT=3306"
             - "DB_TESTING_HOST=testing"
         user: ubuntu
-    frontend:
+    build-frontend:
         build:
             context: ./frontend
         ports:
@@ -45,7 +45,7 @@ services:
         volumes:
             - ./frontend/:/opt/app
         user: node
-    mail:
+    build-mail:
         image: maildev/maildev
         ports:
             - "8025:80"
