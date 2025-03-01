@@ -6,14 +6,14 @@ services:
     build:
       context: ./api/
       dockerfile: Dockerfile.prod
-    image: invoice-manager-build-fpm
+    image: invoice-manager-fpm
     expose:
       - "9000"
   app-api:
     build:
       context: ./api/
       dockerfile: nginx.docker
-    image: invoice-manager-build-api
+    image: invoice-manager-api
     ports:
       - "8000:80"
     depends_on:
@@ -22,7 +22,7 @@ services:
     build:
       context: ./frontend/
       dockerfile: prod.docker
-    image: invoice-manager-build-frontend
+    image: invoice-manager-frontend
     ports:
       - "8080:80"
   sqlserver:
