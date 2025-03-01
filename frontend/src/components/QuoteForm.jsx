@@ -77,13 +77,13 @@ const QuoteForm = (props) => {
             <option>Paid #1</option>
             <option>Paid #2</option>
           </select>
-        </label> */}
+        </label>
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Business No</span>
           </div>
           <input type="text" defaultValue={props.invoice.businessNo} className="input input-bordered w-full" name="businessNo" onChange={handle} />
-        </label>
+        </label> */}
       </div>
 
       <div className="grid grid-cols-2 grid-rows-1 gap-4">

@@ -69,12 +69,12 @@ const InvoiceForm = (props) => {
           <input type="text" defaultValue={props.invoice.orderNo} className="input input-bordered w-full" name="orderNo" onChange={handle} />
         </label>
 
-        <label className="form-control w-full">
+        {/* <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Business No</span>
           </div>
           <input type="text" defaultValue={props.invoice.business_no} className="input input-bordered w-full" name="businessNo" onChange={handle} />
-        </label>
+        </label> */}
       </div>
 
       <div className="grid grid-cols-1 grid-rows-1 gap-4">
