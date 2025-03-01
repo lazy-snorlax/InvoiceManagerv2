@@ -1,5 +1,5 @@
 volumes:
-  dbdata:
+  sqlserver_data:
 
 services:
   app-fpm:
