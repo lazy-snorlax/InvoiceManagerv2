@@ -2,7 +2,7 @@ volumes:
   database:
 
 services:
-    build-testing:
+    testing:
         image: mcr.microsoft.com/mssql/server:2022-latest
         ports:
         - "1433:1433"
@@ -14,17 +14,17 @@ services:
             MSSQL_SA_PASSWORD: secret*12345
             ACCEPT_EULA: Y
         command: ["--innodb_flush_log_at_trx_commit=2"]
-    build-api:
+    api:
         build:
             context: ./api/
             dockerfile: nginx.docker
         ports:
             - "8000:80"
         links:
-            - build-fpm
+            - fpm
         volumes:
             - ./api/:/var/www
-    build-fpm:
+    fpm:
         build:
             context: ./api/
         tmpfs:
@@ -37,7 +37,7 @@ services:
             - "DB_PORT=3306"
             - "DB_TESTING_HOST=testing"
         user: ubuntu
-    build-frontend:
+    frontend:
         build:
             context: ./frontend
         ports:
@@ -45,7 +45,7 @@ services:
         volumes:
             - ./frontend/:/opt/app
         user: node
-    build-mail:
+    mail:
         image: maildev/maildev
         ports:
             - "8025:80"
