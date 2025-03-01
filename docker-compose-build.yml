@@ -21,7 +21,7 @@ services:
         ports:
             - "8000:80"
         links:
-            - fpm
+            - build-fpm
         volumes:
             - ./api/:/var/www
     build-fpm:
