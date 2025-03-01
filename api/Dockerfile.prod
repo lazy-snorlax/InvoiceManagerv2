@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libfontconfig1 \
     libxrender1 \
     zip \
+    curl \
     default-mysql-client \
     libssl-dev \
     libicu-dev \
