@@ -25,15 +25,13 @@ services:
     image: invoice-manager-build-frontend
     ports:
       - "8080:80"
-  mysql:
-    image: mysql:8.0.23
-    ports:
-      - "33061:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-    restart: always
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      - "MYSQL_DATABASE=invoice-manager"
-      - "MYSQL_USER=invoice-manager"
-      - "MYSQL_PASSWORD=secret"
-      - "MYSQL_ROOT_PASSWORD=secret"
+        MSSQL_SA_PASSWORD: secret*12345
+        ACCEPT_EULA: Y
+    ports:
+        - "1433:1433"
+    volumes:
+        - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
