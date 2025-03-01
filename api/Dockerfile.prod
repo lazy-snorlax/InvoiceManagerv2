@@ -1,0 +1,59 @@
+# Use the official PHP 8.3.17 FPM image as the base image
+FROM php:8.3.17-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libzip-dev \
+    libfontconfig1 \
+    libxrender1 \
+    zip \
+    default-mysql-client \
+    libssl-dev \
+    libicu-dev \
+    ghostscript \
+    libxtst6 \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install GD
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    && docker-php-ext-install gd
+
+# Install Microsoft ODBC Driver for SQL Server
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+# Install PHP extensions
+# RUN docker-php-ext-install sqlsrv pdo_sqlsrv
+RUN pecl install sqlsrv pdo_sqlsrv \
+    && docker-php-ext-enable sqlsrv pdo_sqlsrv
+
+# Copy your custom PHP configuration files if you have any
+# COPY ./php.ini /usr/local/etc/php/
+
+# Install Opcache
+RUN docker-php-ext-install opcache
+
+COPY ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./docker/php/memory.ini /usr/local/etc/php/conf.d/memory.ini
+COPY ./docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY ./docker/php/upload.ini /usr/local/etc/php/conf.d/upload.ini
+COPY ./docker/php/headers.ini /usr/local/etc/php/conf.d/headers.ini
+
+COPY ./ /var/www
+
+RUN chmod 777 /var/www/storage -R
+RUN chmod 777 /var/www/bootstrap/cache -R
+RUN chmod u+x /var/www/docker/start.sh
+
+WORKDIR /var/www
+
+ENTRYPOINT []
+
+CMD ["/var/www/docker/start.sh"]
