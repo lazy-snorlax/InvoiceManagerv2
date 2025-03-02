@@ -227,7 +227,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             headers: { 'Content-Type': 'application/json' },
             params: { 'type': 'pdf' }
         }).then(response => {
-            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
             window.open(url, '_blank')
         })
     })
