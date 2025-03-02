@@ -8,4 +8,5 @@ docker compose -f docker-compose-build.yml stop
 
 docker compose -f docker-compose-prod.yml build
 docker compose -f docker-compose-prod.yml up -d
+docker compose exec app-fpm php artisan key:generate
 # docker compose exec app-fpm php artisan migrate
