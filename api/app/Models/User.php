@@ -66,6 +66,6 @@ class User extends Authenticatable
 
     public function businessSettings() : HasOne
     {
-        return $this->hasOne(BusinessSetting::class);
+        return $this->hasOne(BusinessSetting::class, 'user_id', 'id');
     }
 }

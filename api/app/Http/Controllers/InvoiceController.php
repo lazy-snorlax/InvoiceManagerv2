@@ -68,7 +68,7 @@ class InvoiceController extends Controller
     {
         $invoice = TransactionMain::findOrFail($id);
         $invoice->update([
-            'business_no' => $request->user()->businessSettings()->id,
+            'business_no' => $request->user()->businessSettings()->first()->id,
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
