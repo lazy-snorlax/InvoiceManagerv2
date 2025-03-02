@@ -54,7 +54,7 @@ class InvoiceReportController extends Controller
         $csv->insertAll($invoices->map(function ($invoice) {
             return [
                 $invoice->created_at->format('Y-m-d'),
-                $invoice->company()->first()->company_name,
+                $invoice->company()->first()?->company_name,
                 $invoice->total_cost,
                 $invoice->total_gst,
                 $invoice->total,
