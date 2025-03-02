@@ -57,7 +57,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const data = await response.data
             set({ loading: false, records: data })
         } catch (error) {
-            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
         }
     },
 
@@ -68,7 +68,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     },
 
@@ -83,7 +83,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     }),
     previous: ()=> set(async (state) => {
@@ -96,7 +96,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     }),
     first: ()=> set(async (state) => {
@@ -106,7 +106,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     }),
     last: ()=> set(async (state) => {
@@ -116,7 +116,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
         }
     }),
 
@@ -127,7 +127,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
                 const records = [...state.records, {id: response.data.data.id}]
                 set({ loading: false,currentRecord: response.data.data, records: records })
             } catch (error) {
-                set({ error: error instanceof Error ? error.message: "Unknown error" })
+                // set({ error: error instanceof Error ? error.message: "Unknown error" })
             }
         } else {
             try {
@@ -135,7 +135,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
                 const data = response.data
                 set({ currentRecord: data.data })
             } catch (error) {
-                set({ error: error instanceof Error ? error.message: "Unknown error" })
+                // set({ error: error instanceof Error ? error.message: "Unknown error" })
             }
         }
         return { currentRecord: state.currentRecord }
@@ -155,7 +155,7 @@ export const useQuoteStore = create<QuoteState>()(devtools((set) => ({
             }
             set({ currentRecord: newRecord, error:null })
         } catch (error) {
-            set({ error: error instanceof Error ? error.message: "Unknown error" })
+            // set({ error: error instanceof Error ? error.message: "Unknown error" })
         }
     },
 

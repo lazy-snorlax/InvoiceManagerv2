@@ -43,7 +43,7 @@ export const useSettingsStore = create<SettingsState>()(
                 const response = await http.get('settings')
                 set({ loading: false, settings: response.data.data })
             } catch (error) {
-                set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
             }
         },
 
@@ -70,14 +70,14 @@ export const useSettingsStore = create<SettingsState>()(
                     const response = await http.post('settings', state.settings)
                     set({ settings: response.data.data })
                 } catch (error) {
-                    set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                    // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
                 }
             } else {
                 try {
                     const response = await http.put(`settings/${state.settings.id}`, state.settings)
                     set({ settings: response.data.data })
                 } catch (error) {
-                    set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                    // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
                 }
             }
         })
