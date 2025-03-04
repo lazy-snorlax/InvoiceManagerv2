@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 // import axios from "axios";
 import http from "../utilities/http"
+import { toast } from "react-toastify"
 
 // const roles = z.enum(['admin', 'user']);
 // type Role = z.infer<typeof roles>;
@@ -36,13 +37,11 @@ export const useAuthStore = create<AuthState>()(
         isAuthenticated: false,
 
         login: async (payload: LoginForm) => {
-            // set({ loading: true, error: null })
             try {
                 const response = await http.post('login', payload)
-                // console.log(">>> login attempt: ", response.data.data)
                 set({ user: response.data.data, error: null })
             } catch (error) {
-                set({ error: error instanceof Error ? error.message : "Unknown error on login", loading: false })
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         },
 
@@ -50,17 +49,17 @@ export const useAuthStore = create<AuthState>()(
             set({ loading: true, error: null })
             try {
                 const response = await http.post(`logout`)
-                console.log(">>> logout attempt: ", response, response.data)
+                // console.log(">>> logout attempt: ", response, response.data)
                 set({ user: null })
             } catch (error) {
-                set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         },
 
         get_user: async (state: AuthState) => {
             try {
                 const response = await http.get(`user`)
-                console.log(">>> get user attempt: ", response, response.data)
+                // console.log(">>> get user attempt: ", response, response.data)
                 set({ user: response.data.data })
             } catch (error) {
                 set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
@@ -70,11 +69,11 @@ export const useAuthStore = create<AuthState>()(
 
         csrfPreflight: async () => {
             try {
-                console.log(">>> csrf preflight 3")
+                // console.log(">>> csrf preflight 3")
                 await http.get(`sanctum/csrf-cookie`, { csrfPreflight: true })
                 set({ csrf: true })
             } catch {
-                console.log(">>> csrf preflight failed")
+                // console.log(">>> csrf preflight failed")
             }
         }
     })),

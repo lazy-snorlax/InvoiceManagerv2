@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import http from "../utilities/http";
+import { toast } from "react-toastify";
 
 type Customer = {
     id: number | null
@@ -53,7 +54,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const data = await response.data
             set({ loading: false, records: data })
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     },
 
@@ -64,7 +65,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     },
 
@@ -79,7 +80,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     previous: ()=> set(async (state) => {
@@ -92,7 +93,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     first: ()=> set(async (state) => {
@@ -102,7 +103,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     last: ()=> set(async (state) => {
@@ -112,7 +113,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     
@@ -123,7 +124,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
                 const records = [...state.records, {id: response.data.data.id}]
                 set({ loading: false, currentRecord: response.data.data, records: records })
             } catch (error) {
-                // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
             }
         } else {
             try {
@@ -131,7 +132,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
                 const data = response.data
                 set({ currentRecord: data.data })
             } catch (error) {
-                // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
             }
         }
         return { currentRecord: state.currentRecord }
@@ -159,7 +160,7 @@ export const useCustomerStore = create<CustomerState>()(devtools((set) => ({
             }
             set({ currentRecord: newRecord, error: null })
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message: "Unknown error" })
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }
 })))

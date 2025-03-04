@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import http from "../utilities/http";
+import { toast } from "react-toastify";
 
 type Settings = {
     id: Number | null
@@ -43,7 +44,7 @@ export const useSettingsStore = create<SettingsState>()(
                 const response = await http.get('settings')
                 set({ loading: false, settings: response.data.data })
             } catch (error) {
-                // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         },
 
@@ -52,16 +53,16 @@ export const useSettingsStore = create<SettingsState>()(
             try {
                 await http.get('logo')
             } catch (error) {
-                console.log(">>> getLogo err: ", error)
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         },
         uploadLogo: async (payload) => {
             try {
-                const response = http.post(`logo`, payload, {
+                await http.post(`logo`, payload, {
                     headers: { 'Content-Type': undefined }
                 })
             } catch (error) {
-                console.log(error)
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         },
         save: () => set(async (state) => {
@@ -70,14 +71,14 @@ export const useSettingsStore = create<SettingsState>()(
                     const response = await http.post('settings', state.settings)
                     set({ settings: response.data.data })
                 } catch (error) {
-                    // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                    toast.error("Oops, something went wrong! Error: " + error.message)
                 }
             } else {
                 try {
                     const response = await http.put(`settings/${state.settings.id}`, state.settings)
                     set({ settings: response.data.data })
                 } catch (error) {
-                    // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+                    toast.error("Oops, something went wrong! Error: " + error.message)
                 }
             }
         })

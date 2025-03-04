@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import http from "../utilities/http";
+import { toast } from 'react-toastify'
 
 type Invoice = {
     id: number| null
@@ -59,11 +60,10 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const data = await response.data
             set({ loading: false, records: data })
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false })
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     },
 
-    // TODO: api call
     fetchLatestRecord: async () => {
         set({ loading: true, error: null })
         try {
@@ -71,7 +71,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     },
 
@@ -86,7 +86,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     previous:  () => set(async (state) => {
@@ -99,7 +99,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     first: ()=> set(async (state) => {
@@ -109,7 +109,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     last: ()=> set(async (state) => {
@@ -119,7 +119,7 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const data = await response.data;
             set({ loading: false, currentRecord: data.data || null });
         } catch (error) {
-            // set({ error: error instanceof Error ? error.message : "Unknown error", loading: false})
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     }),
     save: () => set(async (state) => {
@@ -128,16 +128,20 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
                 const response = await http.post(`invoices`, state.currentRecord)
                 const records = [...state.records, {id: response.data.data.id}]
                 set({ loading: false,currentRecord: response.data.data, records: records })
+                toast.success("Saved Successfully")
             } catch (error) {
                 // set({ error: error instanceof Error ? error.message: "Unknown error" })
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         } else {
             try {
                 const response = await http.put(`invoices/${state.currentRecord.id}`, state.currentRecord)
                 const data = response.data
                 set({ currentRecord: data.data })
+                toast.success("Saved Successfully")
             } catch (error) {
                 // set({ error: error instanceof Error ? error.message: "Unknown error" })
+                toast.error("Oops, something went wrong! Error: " + error.message)
             }
         }
         return { currentRecord: state.currentRecord }
@@ -157,7 +161,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             }
             set({ currentRecord: newRecord, error: null })
         } catch (error) {
-            set({ error: error instanceof Error ? error.message: "Unknown error" })
+            // set({ error: error instanceof Error ? error.message: "Unknown error" })
+            toast.error("Oops, something went wrong! Error: " + error.message)
         }
     },
 
@@ -228,6 +233,9 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
             window.open(url, '_blank')
         })
+        .catch(error => {
+            toast.error("Oops, something went wrong! Error: " + error.message)
+        })
     }),
 
     downloadCSV: (range, start=null, end=null) => set(async (state) => {
@@ -248,7 +256,8 @@ export const useInvoiceStore = create<InvoiceState>()(devtools((set) => ({
             link.click()
         })
         .catch(error => {
-            console.log(">>> CSV Report Error: ", error)
+            // console.log(">>> CSV Report Error: ", error)
+            toast.error("Oops, something went wrong! Error: " + error.message)
         })
     })
 })))
