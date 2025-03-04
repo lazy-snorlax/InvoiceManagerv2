@@ -4,6 +4,7 @@ import TransactionHeader from '../../components/Transactions/TransactionHeader'
 import CreateTransactionHeader from '../../components/Transactions/CreateTransactionHeader'
 import { useInvoiceStore } from '../../stores/invoice'
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const InvoicePage = ({ record }) => {
     const { 
@@ -24,14 +25,13 @@ const InvoicePage = ({ record }) => {
     const [transactions, setTransactions] = useState(invoice.transactions)
     const invoiceRef = useRef(invoice)
 
+
     const handleOnChange = (event) => {
         if (event.target == undefined) {
-            console.log(">>> handle notInput", event)
             const { value, actionMeta } = event
             invoiceRef.current = ({...invoice, [actionMeta.name]: value.value})
             setCurrentRecord(invoiceRef.current)
         } else {
-            console.log(">>> handle input", event)
             const { name, value } = event.target
             invoiceRef.current = ({...invoice, [name]: value})
             setCurrentRecord(invoiceRef.current)
@@ -44,7 +44,6 @@ const InvoicePage = ({ record }) => {
         transactions.forEach(transaction => {
             total_cost += parseFloat(transaction.lines.reduce(function (sum, line) { return sum + parseFloat(line.cost) }, 0))
         });
-        // console.log(total_cost)
         return total_cost.toFixed(2)
     }
 
@@ -77,7 +76,6 @@ const InvoicePage = ({ record }) => {
                 <div className="card-body items-center text-center py-1">
                     <div className="grid grid-cols-10 grid-rows-1 gap-4">
                         <button className="btn btn-primary" onClick={downloadPdf} >Preview Invoice</button>
-                        {/* <button className="btn btn-primary">Print Invoice</button> */}
                         <button className="btn btn-success" onClick={handleSave}>Save Invoice</button>
                         <span className="col-span-4"></span>
                         <span className="my-auto col-span-1">Item Excl Total: ${(calculateCost())}</span>

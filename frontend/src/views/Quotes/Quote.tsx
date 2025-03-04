@@ -26,12 +26,10 @@ const Quote = ({ record }) => {
 
     const handleOnChange = (event) => {
         if (event.target == undefined) {
-            console.log(">>> handle notInput", event)
             const { value, actionMeta } = event
             quoteRef.current = ({...quote, [actionMeta.name]: value.value})
             setCurrentRecord(quoteRef.current)
         } else {
-            console.log(">>> handle input", event)
             const { name, value } = event.target
             quoteRef.current = ({...quote, [name]: value})
             setCurrentRecord(quoteRef.current)
@@ -44,7 +42,6 @@ const Quote = ({ record }) => {
         transactions.forEach(transaction => {
             total_cost += parseFloat(transaction.lines.reduce(function (sum, line) { return sum + parseFloat(line.cost) }, 0))
         });
-        // console.log(total_cost)
         return total_cost.toFixed(2)
     }
 
@@ -79,7 +76,6 @@ const Quote = ({ record }) => {
                 <div className="card-body items-center text-center py-1">
                     <div className="grid grid-cols-10 grid-rows-1 gap-4">
                         <button className="btn btn-primary" onClick={downloadPdf}>Preview Quote</button>
-                        {/* <button className="btn btn-primary">Print Quote</button> */}
                         <button className="btn btn-success" onClick={handleSave}>Save Quote</button>
                         <span className="col-span-4"></span>
                         <span className="my-auto col-span-1">Item Excl Total: ${(calculateCost())}</span>

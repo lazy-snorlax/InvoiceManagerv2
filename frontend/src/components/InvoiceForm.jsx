@@ -15,14 +15,11 @@ const InvoiceForm = (props) => {
   const defaultCompany = reactCompanyOptions.find(option => option.value == props.invoice.company)
   
   const handleSelectChange = (value, actionMeta) => {
-    // console.log(">>> handle", value, actionMeta)
     handle({ value, actionMeta })
   }
 
   useEffect(() => {
     fetchRecords()
-    // setCompanyOptions(options)
-    console.log(">>> defaultCompany: ", defaultCompany)
   }, [fetchRecords])
 
   return (
@@ -55,26 +52,12 @@ const InvoiceForm = (props) => {
       </div>
 
       <div className="grid grid-cols-3 grid-rows-1 gap-4">
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Type</span>
-          </div>
-          <input type="text" defaultValue={props.invoice.type} className="input input-bordered w-full" name="type" />
-        </label> */}
-
         <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Order No</span>
           </div>
           <input type="text" defaultValue={props.invoice.orderNo} className="input input-bordered w-full" name="orderNo" onChange={handle} />
         </label>
-
-        {/* <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Business No</span>
-          </div>
-          <input type="text" defaultValue={props.invoice.business_no} className="input input-bordered w-full" name="businessNo" onChange={handle} />
-        </label> */}
       </div>
 
       <div className="grid grid-cols-1 grid-rows-1 gap-4">

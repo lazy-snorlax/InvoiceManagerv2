@@ -97,8 +97,6 @@ const SettingsForm = ({ settings, update }) => {
           </div>
         </div>
       </form>
-
-      {/* <BusinessLogo route={route} img={data.ImgLoc} /> */}
     </div>
   );
 }

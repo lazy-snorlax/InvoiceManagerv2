@@ -26,11 +26,6 @@ const LoginPage = (props: Props) => {
     const [loginError, setLoginError] = useState(error)
 
     let navigate = useNavigate()
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     formState: { errors },
-    // } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) })
 
     const submit = async () => {
         await login({ email: userRef.current, password: passRef.current })
@@ -54,7 +49,7 @@ const LoginPage = (props: Props) => {
         }
 
         if (loginError) {
-            console.log(">>> login error: ", loginError)
+            // console.log(">>> login error: ", loginError)
         }
     })
 

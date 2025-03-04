@@ -20,7 +20,6 @@ const Reports = (props: Props) => {
     }
 
     const handle = (range) => {
-        console.log('>>> handler', fromRef.current, toRef.current)
         if (typeof range === 'string') {
             downloadCSV(range, null, null)
         } else {
@@ -36,8 +35,6 @@ const Reports = (props: Props) => {
                     Select the start and end dates for the reports.
 
                     <div className="grid grid-cols-2 grid-rows-1 gap-4">
-                        {/* <button className="btn btn-secondary">Sales by Last Month</button> */}
-                        {/* <button className="btn btn-secondary">Sales by Last Year</button> */}
                         <button className="btn btn-secondary" onClick={() => handle('month')} >Export Last Month to Excel</button>
                         <button className="btn btn-secondary" onClick={() => handle('year')}>Export Last Year to Excel</button>
                     </div>
@@ -59,7 +56,6 @@ const Reports = (props: Props) => {
                     </div>
                     
                     <div className="grid grid-cols-1 grid-rows-1 gap-4">
-                        {/* <button className="btn btn-secondary">Custom Sales Report</button> */}
                         <button className="btn btn-secondary" onClick={() => handle(null)}>Custom Export to Excel</button>
                     </div>
                 </div>

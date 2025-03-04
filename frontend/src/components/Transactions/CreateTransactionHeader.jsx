@@ -27,7 +27,6 @@ const CreateTransactionHeader = ({ transactions, add }) => {
         }]
     }
     add([...list, newLine])
-    console.log(">>> New TR Header: ", list, newLine)
   }
 
   return (
