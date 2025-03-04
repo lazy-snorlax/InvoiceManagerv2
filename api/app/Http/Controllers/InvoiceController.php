@@ -28,7 +28,7 @@ class InvoiceController extends Controller
     {
         $invoice = new TransactionMain();
         $invoice->fill([
-            'business_no' => $request->user()->businessSettings()->id,
+            'business_no' => $request->user()->businessSettings()->first()->id,
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
