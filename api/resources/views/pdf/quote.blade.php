@@ -90,7 +90,7 @@
                             <td style="text-align: center">{{$line->item}}</td>
                             <td>{{$line->description}}</td>
                             <td style="text-align: right; padding:0 10px;">${{ number_format($line->gst, 2) }}</td>
-                            <td style="text-align: right; padding:0 10px;">${{ number_format($line->gst + $line->cost, 2) }}</td>
+                            <td style="text-align: right; padding:0 10px;">${{ number_format($line->cost, 2) }}</td>
                         </tr>
                         @php
                             $subtotal = $subtotal + $line->cost;
