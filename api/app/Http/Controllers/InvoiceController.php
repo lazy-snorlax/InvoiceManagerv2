@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\InvoiceResource;
+use App\Models\TransactionHeader;
+use App\Models\TransactionLine;
 use App\Models\TransactionMain;
 use Illuminate\Http\Request;
 
@@ -73,6 +75,9 @@ class InvoiceController extends Controller
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
         ]);
+
+        $updated_header_ids = [];
+        $updated_line_ids = [];
         // Headers - update or create
         foreach ($request->input('transactions') as $headerData) {
             $header = $invoice->headers()->updateOrCreate(
@@ -82,9 +87,10 @@ class InvoiceController extends Controller
                     'description' => $headerData['description']
                 ],
             );
+            $updated_header_ids[] = $header->id;
             // Lines - update or create
             foreach ($headerData['lines'] as $lineData) {
-                $header->lines()->updateOrCreate(
+                $line = $header->lines()->updateOrCreate(
                     ['id' => array_key_exists("id", $lineData) ? $lineData['id'] : null],
                     [
                         'transaction_header_id' => $header['id'],
@@ -94,10 +100,17 @@ class InvoiceController extends Controller
                         'gst' => $lineData['cost'] * ($lineData['tax'] / 100),
                         'cost' => $lineData['cost'],
                         'expense' => $lineData['expense']
-                    ]
-                );
+                        ]
+                    );
+                $updated_line_ids[] = $line->id;
             }
         }
+
+        // Delete lines not in update data
+        TransactionLine::whereNotIn('id', $updated_line_ids)->delete();
+        // Delete headers not in update data
+        TransactionHeader::whereNotIn('id', $updated_header_ids)->delete();
+
         return new InvoiceResource($invoice->load(['headers.lines']));
     }
 }

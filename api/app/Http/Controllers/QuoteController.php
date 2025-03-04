@@ -74,6 +74,8 @@ class QuoteController extends Controller
             'note' => $request->input('note'),
         ]);
 
+        $updated_header_ids = [];
+        $updated_line_ids = [];
         // Headers - update or create
         foreach ($request->input('transactions') as $headerData) {
             $header = $quote->headers()->updateOrCreate(
@@ -83,9 +85,10 @@ class QuoteController extends Controller
                     'description' => $headerData['description']
                 ],
             );
+            $updated_header_ids[] = $header->id;
             // Lines - update or create
             foreach ($headerData['lines'] as $lineData) {
-                $header->lines()->updateOrCreate(
+                $line = $header->lines()->updateOrCreate(
                     ['id' => array_key_exists("id", $lineData) ? $lineData['id'] : null],
                     [
                         'transaction_header_id' => $header['id'],
@@ -97,6 +100,7 @@ class QuoteController extends Controller
                         'expense' => $lineData['expense']
                     ]
                 );
+                $updated_line_ids[] = $line->id;
             }
         }
         return new InvoiceResource($quote->load(['headers.lines']));
