@@ -64,23 +64,17 @@ return [
         ],
 
         'testing' => [
-            'driver' => 'mysql',
+            'driver' => 'sqlsrv',
             'url' => env('TESTING_DATABASE_URL'),
-            'host' => env('DB_TESTING_HOST', env('DB_HOST')),
-            'port' => env('DB_TESTING_PORT', env('DB_PORT')),
+            'host' => env('DB_TESTING_HOST', 'testing'),
+            'port' => env('DB_TESTING_PORT', '14332'),
             'database' => env('DB_TESTING_DATABASE', 'testing'),
             'username' => env('DB_TESTING_USER', env('DB_USERNAME')),
-            'password' => env('DB_TESTING_PASSWORD', env('DB_PASSWORD')),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'password' => env('DB_TESTING_PASSWORD', ''),
+            'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
         'pgsql' => [

@@ -14,6 +14,15 @@ services:
         volumes:
             - sqlserver_data:/var/opt/mssql
         restart: unless-stopped
+    testing:
+        container_name: invoice-manager-testing
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+            MSSQL_SA_PASSWORD: secret
+            ACCEPT_EULA: Y
+        ports:
+            - "14332:1433"
+        restart: unless-stopped
     api:
         container_name: invoice-manager-api
         build:
