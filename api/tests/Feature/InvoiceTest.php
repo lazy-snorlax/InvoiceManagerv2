@@ -14,6 +14,24 @@ class InvoiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testUserCanGetInvoiceRecords() {
+        $user = $this->createUser();
+
+        $company = Company::factory()->create();
+        TransactionMain::factory(5)->create([
+            "type" => 1,
+            "company_no" => $company->id,
+        ]);
+
+        $response = $this->be($user)->getJson('api/invoice-list');
+
+        $response->assertSuccessful();
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', fn (AssertableJson $json) => $json
+                ->count(5)
+        ));
+    }
+
     public function testUserCanGetLatestInvoice() {
         $user = $this->createUser();
 
@@ -39,6 +57,40 @@ class InvoiceTest extends TestCase
                 ->where('company', $company->id)
                 ->where('type', 1)
                 ->where('order_no', 123456)
+                ->where('payment_no', null)
+                ->where('payment_detail', null)
+                ->where('paid', null)
+                ->where('note', null)
+                ->where('created_at', now()->format('Y-m-d'))
+                ->has('transactions')
+        ));
+    }
+
+    public function testUserCanGetSpecificInvoice() {
+        $user = $this->createUser();
+
+        $company = Company::factory()->create();
+        $invoice = TransactionMain::factory()->create([
+            "type" => 1,
+            "company_no" => $company->id,
+        ]);
+        $invoice_header = TransactionHeader::factory()->create([
+            "transaction_main_id" => $invoice->id,
+        ]);
+        $invoice_line = TransactionLine::factory()->create([
+            "transaction_header_id" => $invoice_header->id,
+        ]);
+
+        $response = $this->be($user)->getJson('api/invoices/' . $invoice->id);
+
+        $response->assertSuccessful();
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', fn (AssertableJson $json) => $json
+                ->has('id')
+                ->where('business_no', $user->businessSettings()->first()->id)
+                ->where('company', $company->id)
+                ->where('type', 1)
+                ->where('order_no', null)
                 ->where('payment_no', null)
                 ->where('payment_detail', null)
                 ->where('paid', null)
@@ -75,4 +127,40 @@ class InvoiceTest extends TestCase
                 ->has('transactions')
         ));
     }
+
+    // public function testUserCanUpdateInvoiceWithNewLines() {
+    //     $user = $this->createUser();
+
+    //     $company = Company::factory()->create();
+    //     $invoice = TransactionMain::factory()->create([
+    //         "type" => 1,
+    //         "company_no" => $company->id,
+    //     ]);
+    //     $invoice_header = TransactionHeader::factory()->create([
+    //         "transaction_main_id" => $invoice->id,
+    //     ]);
+    //     $invoice_line = TransactionLine::factory()->create([
+    //         "transaction_header_id" => $invoice_header->id,
+    //     ]);
+
+    //     $response = $this->be($user)->putJson('api/invoices/' . $invoice->id, [
+            
+    //     ]);
+
+    //     $response->assertSuccessful();
+    //     $response->assertJson(fn (AssertableJson $json) => $json
+    //         ->has('data', fn (AssertableJson $json) => $json
+    //             ->has('id')
+    //             ->where('business_no', $user->businessSettings()->first()->id)
+    //             ->where('company', $company->id)
+    //             ->where('type', 1)
+    //             ->where('order_no', 123456)
+    //             ->where('payment_no', null)
+    //             ->where('payment_detail', null)
+    //             ->where('paid', null)
+    //             ->where('note', null)
+    //             ->where('created_at', now()->format('Y-m-d'))
+    //             ->has('transactions')
+    //     ));
+    // }
 }
