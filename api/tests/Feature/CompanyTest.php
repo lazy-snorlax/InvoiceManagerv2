@@ -91,4 +91,47 @@ class CompanyTest extends TestCase
                 ->where('postal_post_code', $companyData['postal_post_code'])
         ));
     }
+
+    public function testUserCanUpdateACompanyDetails()
+    {
+        $user = $this->createUser();
+        $company = Company::factory()->create();
+
+        $companyData = [
+            "abn" => '123654789',
+            "company_name" => 'Test Company',
+            "contact_name" => 'Testy McTester',
+            "email" => 'test@test.io',
+            "mobile" => '0412345622',
+            "phone" => null,
+            "location_address" => '123 Fake Street',
+            "location_city" => 'Adelaide',
+            "location_post_code" => '5000',
+            "location_state" => 'SA',
+            "postal_address" => '500 North Terrace',
+            "postal_city" => 'Adelaide',
+            "postal_post_code" => '5000',
+            "postal_state" => 'SA',
+        ];
+        $response = $this->be($user)->putJson('api/companies/' . $company->id, $companyData);
+        $response->assertSuccessful();
+        $response->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', fn (AssertableJson $json) => $json
+                ->has('id')
+                ->where('company_name', $companyData['company_name'])
+                ->where('contact_name', $companyData['contact_name'])
+                ->where('abn', $companyData['abn'])
+                ->where('email', $companyData['email'])
+                ->where('phone', $companyData['phone'])
+                ->where('mobile', $companyData['mobile'])
+                ->where('location_address', $companyData['location_address'])
+                ->where('location_city', $companyData['location_city'])
+                ->where('location_state', $companyData['location_state'])
+                ->where('location_post_code', $companyData['location_post_code'])
+                ->where('postal_address', $companyData['postal_address'])
+                ->where('postal_city', $companyData['postal_city'])
+                ->where('postal_state', $companyData['postal_state'])
+                ->where('postal_post_code', $companyData['postal_post_code'])
+        ));
+    }
 }
