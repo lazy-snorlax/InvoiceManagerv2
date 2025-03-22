@@ -22,11 +22,11 @@
                     <td style="text-align: center">
                         <h1 style="margin-bottom: 3px">QUOTE</h1>
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->note1 }}</span> <br>
-                        <span style="font-style: italic;font-weight: bold;">ABN: {{ $settings->abn }}</span>  <br>
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->address }}</span> <br>
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->city }}</span> <br>
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->state }} {{$settings->post_code}}</span> <br>
                         <span style="font-style: italic;font-weight: bold;">Mobile {{ $settings->mobile }}</span>
+                        <span style="font-style: italic;font-weight: bold;">ABN: {{ $settings->abn }}</span>  <br>
                     </td>
                 </tr>
             </table>
