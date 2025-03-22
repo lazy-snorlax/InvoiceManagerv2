@@ -25,8 +25,8 @@
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->address }}</span> <br>
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->city }}</span> <br>
                         <span style="font-style: italic;font-weight: bold;">{{ $settings->state }} {{$settings->post_code}}</span> <br>
-                        <span style="font-style: italic;font-weight: bold;">Mobile {{ $settings->mobile }}</span>
-                        <span style="font-style: italic;font-weight: bold;">ABN: {{ $settings->abn }}</span>  <br>
+                        <span style="font-style: italic;font-weight: bold;">Mobile {{ $settings->mobile }}</span>  <br>
+                        <span style="font-style: italic;font-weight: bold;">ABN: {{ $settings->abn }}</span>
                     </td>
                 </tr>
             </table>
