@@ -47,7 +47,7 @@ const InvoiceForm = (props) => {
           <div className="label">
             <span className="label-text">Date</span>
           </div>
-          <input type="date" defaultValue={props.invoice.created_at} className="input input-bordered w-full" name="date" onChange={handle} />
+          <input type="date" defaultValue={props.invoice.date_issued ?? props.invoice.created_at} className="input input-bordered w-full" name="date_issued" onChange={handle} />
         </label>
       </div>
 
