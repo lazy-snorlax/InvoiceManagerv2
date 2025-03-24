@@ -22,11 +22,13 @@ class TransactionMain extends Model
         'payment_detail',
         'paid',
         'note',
+        'date_issued',
     ];
 
     protected $hidden = [];
 
     protected $casts = [
+        'date_issued' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
