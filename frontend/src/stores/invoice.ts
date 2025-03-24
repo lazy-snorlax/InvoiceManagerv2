@@ -7,7 +7,7 @@ type Invoice = {
     id: number| null
     company: string | null
     credittype: string | null
-    created_at: string | null
+    date_issued: string | null
     note: string | null
     paid: string | null
     paymentdetail: string | null

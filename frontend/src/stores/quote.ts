@@ -7,7 +7,7 @@ type Quote = {
     id: number| null
     company: string | null
     credittype: string | null
-    date: string | null
+    date_issued: string | null
     note: string | null
     paid: string | null
     paymentdetail: string | null
