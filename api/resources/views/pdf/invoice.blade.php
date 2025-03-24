@@ -58,7 +58,7 @@
                             </tr>
                             <tr>
                                 <th style="padding: left 5px; text-align: right">Date: </th>
-                                <td style="border: solid 1px gray;text-align: center">{{ $invoice->created_at->format('d M Y') }}</td>
+                                <td style="border: solid 1px gray;text-align: center">{{ $invoice->date_issued->format('d M Y') }}</td>
                             </tr>
                             <tr>
                                 <th style="padding: left 5px; text-align: right">Order No: </th>

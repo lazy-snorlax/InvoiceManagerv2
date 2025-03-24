@@ -34,6 +34,7 @@ class InvoiceController extends Controller
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
+            'date_issued' => $request->input('date_issued'),
         ]);
         $invoice->type = 1; // Save As Invoice
         $invoice->save();
@@ -74,6 +75,7 @@ class InvoiceController extends Controller
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
+            'date_issued' => $request->input('date_issued'),
         ]);
 
         $updated_header_ids = [];

@@ -32,6 +32,7 @@ class QuoteController extends Controller
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
+            'date_issued' => $request->input('date_issued'),
         ]);
         $quote->type = 3;
         $quote->save();
@@ -72,6 +73,7 @@ class QuoteController extends Controller
             'company_no' => $request->input('company'),
             'order_no' => $request->input('orderNo'),
             'note' => $request->input('note'),
+            'date_issued' => $request->input('date_issued'),
         ]);
 
         $updated_header_ids = [];
