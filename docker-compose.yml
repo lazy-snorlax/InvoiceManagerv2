@@ -27,7 +27,7 @@ services:
         container_name: invoice-manager-api
         build:
             context: ./api/
-            dockerfile: nginx.docker
+            dockerfile: web.docker
         ports:
             - "8000:80"
         env_file:
